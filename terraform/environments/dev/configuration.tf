@@ -22,5 +22,5 @@ terraform{
 }
 
 provider "aws"{
-    region = "af-south-1"
+    region = var.aws_region
 }

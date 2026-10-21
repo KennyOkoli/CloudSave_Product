@@ -39,17 +39,16 @@ jobs:
       - name: plan
         run: terraform plan -out=plan
 
-#  apply:
-#    needs: plan
-#   runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - run: terraform apply plan --auto-approve
+      - name: apply
+        run: terraform apply plan --auto-approve
+
+
+
 
 # Things to add
-# Combine the plan and apply jobs
+# Combine the plan and apply jobs -- done
 # Look up the hashicorp/ actions repo --done
-# Look up IAM for github, ( Where will it be configured? )
-# Also learn more about the default github yaml schema
+# Look up IAM for github, ( Where will it be configured? ) - done, it has to be done manually as a first cause
+# Also learn more about the default github yaml schema -done! Used to set the cd to my target dir
 
 # Role arn: arn:aws:iam::871145212791:role/Github-Terraform-Role
