@@ -8,8 +8,8 @@ on:
       - 'terraform/environments/dev/**'
       - '.github/workflows/dev_deploy.yaml'
 
-defaults: # sets the workdir where jobs will be ran
-  run:
+defaults: 
+  run: # sets the workdir where jobs will be ran
     working-directory: terraform/environments/dev/
 
 permissions:
