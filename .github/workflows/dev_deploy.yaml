@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: authenticate
         id: assumeRole
-        uses: aws-actions/configure-aws-credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::871145212791:role/Github-Terraform-Role
           region: af-south-1
@@ -30,7 +30,7 @@ jobs:
 
       - name: init
         run: terraform init
-        
+
       - name: plan
         run: terraform plan -out=plan
 
