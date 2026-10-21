@@ -12,9 +12,13 @@ defaults: # sets the workdir where jobs will be ran
   run:
     working-directory: terraform/environments/dev/
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   authenticate-plan-apply:
-    runs-on: ubuntu-latest
+    runs-on: Ubuntu 26
     steps:
       - name: authenticate
         id: assumeRole
