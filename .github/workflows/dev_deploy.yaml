@@ -26,10 +26,12 @@ jobs:
         uses: actions/checkout@v4
         
       - name: install-terraform
-        uses: hashicorp/setup-terraform@v4
+        uses: hashicorp/setup-terraform@v3
 
-      - name: init-plan-apply
+      - name: init
         run: terraform init
+        
+      - name: plan
         run: terraform plan -out=plan
 
 #  apply:
