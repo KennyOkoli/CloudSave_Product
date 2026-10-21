@@ -1,0 +1,48 @@
+name: To plan and apply terraform config files on push to main
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - terraform/environments/dev/**
+
+defaults: # sets the workdir where jobs will be ran
+  run:
+    working-directory: terraform/environments/dev/
+
+jobs:
+  authenticate-plan-apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: authenticate
+        id: assumeRole
+        uses: aws-actions/configure-aws-credentials
+        with:
+          role-to-assume: arn:aws:iam::871145212791:role/Github-Terraform-Role
+          region: af-south-1
+
+      - name: get-source-code
+        uses: actions/checkout@v4
+        
+      - name: install-terraform
+        uses: hashicorp/setup-terraform@v4
+
+      - name: init-plan-apply
+        run: terraform init
+        run: terraform plan -out=plan
+
+#  apply:
+#    needs: plan
+#   runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#      - run: terraform apply plan --auto-approve
+
+# Things to add
+# Combine the plan and apply jobs
+# Look up the hashicorp/ actions repo --done
+# Look up IAM for github, ( Where will it be configured? )
+# Also learn more about the default github yaml schema
+
+# Role arn: arn:aws:iam::871145212791:role/Github-Terraform-Role
