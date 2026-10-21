@@ -14,7 +14,7 @@ defaults: # sets the workdir where jobs will be ran
 
 jobs:
   authenticate-plan-apply:
-    runs-on: ubuntu 26
+    runs-on: ubuntu-latest
     steps:
       - name: authenticate
         id: assumeRole
