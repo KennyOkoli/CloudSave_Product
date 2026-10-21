@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   authenticate-plan-apply:
-    runs-on: Ubuntu 26
+    runs-on: ubuntu-lates
     steps:
       - name: authenticate
         id: assumeRole
