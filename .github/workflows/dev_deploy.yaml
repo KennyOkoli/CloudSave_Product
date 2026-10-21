@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'terraform/environments/dev/**''
+      - terraform/environments/dev/**
 
 defaults: # sets the workdir where jobs will be ran
   run:
