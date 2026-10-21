@@ -14,17 +14,17 @@ defaults: # sets the workdir where jobs will be ran
 
 jobs:
   authenticate-plan-apply:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu 26
     steps:
       - name: authenticate
         id: assumeRole
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::871145212791:role/Github-Terraform-Role
-          region: af-south-1
+          aws-region: af-south-1
 
       - name: get-source-code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         
       - name: install-terraform
         uses: hashicorp/setup-terraform@v3
