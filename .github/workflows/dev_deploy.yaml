@@ -21,7 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: authenticate
-        id: assumeRole
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::871145212791:role/Github-Terraform-Role
