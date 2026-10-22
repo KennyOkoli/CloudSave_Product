@@ -44,7 +44,7 @@ jobs:
 
 
 
-# Things to add
+# Things to  add
 # Combine the plan and apply jobs -- done
 # Look up the hashicorp/ actions repo --done
 # Look up IAM for github, ( Where will it be configured? ) - done, it has to be done manually as a first cause
