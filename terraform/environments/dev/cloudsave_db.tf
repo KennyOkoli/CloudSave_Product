@@ -34,7 +34,7 @@ resource "aws_db_parameter_group" "db_parameter" {
 
 resource "aws_db_subnet_group" "db_subnet_group" {
     name = "db_subnet_group"
-    subnet_ids = [aws_subnet.db_subnet.id]
+    subnet_ids = aws_subnet.db_subnet[*].id
 }
 
 resource "aws_security_group" "mysql_db_sg" {
@@ -61,9 +61,10 @@ resource "aws_security_group_rule" "mysql_db_sg_rule_eg"{
 }
 
 resource "aws_subnet" "db_subnet" {
+    count = 2
     vpc_id = aws_vpc.CloudSave.id
-    cidr_block = var.db-subnet-cidr
-    availability_zone = data.aws_availability_zones.africa_az.names[0]
+    cidr_block = "172.0.${count.index + 200}.0/24"
+    availability_zone = data.aws_availability_zones.africa_az.names[2]
     map_public_ip_on_launch = true  # For now the db is in a public subnet for dev use
 
     tags={
@@ -92,7 +93,8 @@ resource "aws_network_acl" "db_nacl" {
 }
 
 resource "aws_network_acl_association" "db_subnet_to_nacl" {
-    subnet_id = aws_subnet.db_subnet.id
+    count = 2
+    subnet_id = aws_subnet.db_subnet[count.index].id
     network_acl_id = aws_network_acl.db_nacl.id
 }
 
@@ -105,6 +107,7 @@ resource "aws_route_table" "db_route" {
 }
 
 resource "aws_route_table_association" "db_subnet_to_route" {
+    count = 2
     route_table_id = aws_route_table.db_route.id
-    subnet_id = aws_subnet.db_subnet.id
+    subnet_id = aws_subnet.db_subnet[count.index].id
 }
