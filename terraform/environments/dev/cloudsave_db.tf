@@ -108,7 +108,7 @@ resource "aws_route_table_association" "db_subnet_to_route" {
 }
 
 resource "aws_instance" "db_ec2_jumphost" {
-    ami = "ami-08c46876c64a927b8"
+    ami = "ami-0527144c5a042f57d"
     instance_type = "t3.micro"
     subnet_id = aws_subnet.db_subnet[0].id
     vpc_security_group_ids = [aws_security_group.mysql_db_sg.id]
