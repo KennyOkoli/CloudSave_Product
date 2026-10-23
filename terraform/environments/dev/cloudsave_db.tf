@@ -1,4 +1,11 @@
-/*resource "aws_db_instance" "CloudSave_db"{
+data "aws_secretsmanager_secret_version" "db-secrets" {
+    secret_id = aws_secretsmanager_secret.cloudsave-db-secrets.id
+}
+ locals{
+    db_credentials = jsondecode(data.aws_secretsmanager_secret_version.db-secrets.secret_string)
+ }
+
+resource "aws_db_instance" "CloudSave_db"{
     db_name = "CloudSave_db"
     identifier = "cloudsave"
     engine = "mysql"
@@ -6,8 +13,8 @@
     instance_class = "db.t3.micro"
     storage_type = "gp3"
     allocated_storage = 20
-    username = file("${path.module}/mysql_username.txt")
-    password = file("${path.module}/mysql_password.txt")
+    username = local.db_credentials.username
+    password = local.db_credentials.password
     multi_az = false
     skip_final_snapshot = true
     db_subnet_group_name = aws_db_subnet_group.db_subnet_group.name
@@ -15,11 +22,21 @@
     parameter_group_name = aws_db_parameter_group.db_parameter.name
 }
 
+resource "aws_db_parameter_group" "db_parameter" {
+    name_prefix = "mysql84-parameter"
+    family = "mysql8.4"
+
+    parameter {
+      name = "max_connections"
+      value = 500
+    }
+}
+
 resource "aws_db_subnet_group" "db_subnet_group" {
     name = "db_subnet_group"
     subnet_ids = [aws_subnet.db_subnet.id]
 }
-*/
+
 resource "aws_security_group" "mysql_db_sg" {
     name = "postgres_db_sg"
     vpc_id = aws_vpc.CloudSave.id

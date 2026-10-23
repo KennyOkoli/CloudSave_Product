@@ -35,11 +35,20 @@ data "aws_iam_policy_document" "use_s3_policy" {
             "s3:ListBucket",
             "s3:GetObject",
             "s3:PutObject",
-            "s3:DeleteObject"
+            "s3:DeleteObject",
+            "secretsmanager:GetSecretValue"
         ]
         resources = [
             aws_s3_bucket.cloudsave_s3.arn,
-            "${aws_s3_bucket.cloudsave_s3.arn}/*"]
+            "${aws_s3_bucket.cloudsave_s3.arn}/*",
+            aws_secretsmanager_secret.cloudsave-db-secrets.arn]
+    }
+    statement {
+        effect = "Allow"
+        actions = [
+            "s3:ListAllMyBuckets"
+        ]
+        resources = ["*"]
     }
 }
 

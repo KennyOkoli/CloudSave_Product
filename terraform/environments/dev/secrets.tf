@@ -1,10 +1,10 @@
-resource "aws_secretsmanager_secret" "cloudsave_secrets" {
-    name = "cloudsave-secrets"
+resource "aws_secretsmanager_secret" "cloudsave-db-secrets" {
+    name = "cloudsave-db-secrets"
 }
-/*
+
 resource "aws_secretsmanager_secret_version" "db-secrets" {
-    secret_id = aws_secretsmanager_secret.cloudsave_secrets.id
-    secret_string = 
+    secret_id = aws_secretsmanager_secret.cloudsave-db-secrets.id
+    secret_string = jsonencode(var.db-credentials)
 }
 
 variable "db-credentials" {
@@ -12,4 +12,5 @@ variable "db-credentials" {
     username = "Kenny"
     password = "kenny2007"
   }
-} */
+  sensitive = true
+} 
