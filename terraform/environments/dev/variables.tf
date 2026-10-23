@@ -35,7 +35,7 @@ variable "key_name" {
 }
 
 variable "db_subnet_tags" {
-    default = "subnet-1"
+    default = ["db-subnet-1", "db-subnet-2"]
 }
 
 variable "db-subnet-cidr" {

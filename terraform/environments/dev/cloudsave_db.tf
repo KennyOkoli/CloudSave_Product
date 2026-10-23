@@ -68,7 +68,7 @@ resource "aws_subnet" "db_subnet" {
     map_public_ip_on_launch = true  # For now the db is in a public subnet for dev use
 
     tags={
-        name = var.db_subnet_tags
+        name = var.db_subnet_tags[count.index]
     }
 }
 
