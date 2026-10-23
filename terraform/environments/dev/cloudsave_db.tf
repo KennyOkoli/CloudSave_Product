@@ -42,7 +42,6 @@ resource "aws_security_group" "mysql_db_sg" {
     vpc_id = aws_vpc.CloudSave.id
 }
 
-
 resource "aws_security_group_rule" "mysql_db_sg_rule"{
     security_group_id = aws_security_group.mysql_db_sg.id
     cidr_blocks = [var.public_ip]
@@ -110,8 +109,8 @@ resource "aws_route_table_association" "db_subnet_to_route" {
 resource "aws_instance" "db_ec2_jumphost" {
     ami = "ami-0527144c5a042f57d"
     instance_type = "t3.micro"
-    subnet_id = aws_subnet.db_subnet[0].id
-    vpc_security_group_ids = [aws_security_group.mysql_db_sg.id]
+    subnet_id = aws_subnet.CS_private_subnet[0].id
+    vpc_security_group_ids = [aws_security_group.ec2_sg.id]
     iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.name
 
     user_data = <<EOF
@@ -123,6 +122,28 @@ resource "aws_instance" "db_ec2_jumphost" {
     systemctl start amazon-ssm-agent
     
     EOF
+}
+resource "aws_security_group" "ec2_sg" {
+    name = "ec2-db-sg"
+    vpc_id = aws_vpc.CloudSave.id
+}
+
+resource "aws_security_group_rule" "ec2_sg_rule"{
+    security_group_id = aws_security_group.ec2_sg.id
+    cidr_blocks = [var.public_ip]
+    type = "ingress"
+    protocol = "tcp"
+    from_port = 0
+    to_port = 65535
+}
+
+resource "aws_security_group_rule" "ec2_sg_rule_eg"{
+    security_group_id = aws_security_group.ec2_sg.id
+    cidr_blocks = [var.public_ip]
+    type = "egress"
+    protocol = "tcp"
+    from_port = 0
+    to_port = 65535
 }
 
 resource "aws_iam_role" "ec2_role" {
