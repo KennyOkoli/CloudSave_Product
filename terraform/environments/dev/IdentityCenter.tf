@@ -56,7 +56,7 @@ resource "aws_ssoadmin_account_assignment" "jeff-account-permission" {
     permission_set_arn = aws_ssoadmin_permission_set.use_s3.arn
 
     principal_type = "USER"
-    principal_id = aws_identitystore_user.jeff.id
+    principal_id = aws_identitystore_user.jeff.user_id
 
     target_id = var.account
     target_type = "AWS_ACCOUNT"
