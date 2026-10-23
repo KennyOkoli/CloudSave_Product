@@ -41,3 +41,12 @@ variable "db_subnet_tags" {
 variable "db-subnet-cidr" {
     default = "172.0.200.0/24"
 }
+
+variable "jeff_email" {
+    default = "jahbuchimokoli3@gmail.com"
+    sensitive = true
+}
+
+variable "identity_center_region" {
+    default = "us-east-1"
+}

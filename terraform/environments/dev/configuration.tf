@@ -24,3 +24,8 @@ terraform{
 provider "aws"{
     region = var.aws_region
 }
+
+provider "aws" {
+    alias = "identity_center"
+    region = var.identity_center_region 
+}
