@@ -119,8 +119,8 @@ resource "aws_instance" "db_ec2_jumphost" {
 
     exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
     dnf update -y
-    systemctl start amazon-ssm-agent
     systemctl enable amazon-ssm-agent
+    systemctl start amazon-ssm-agent
     
     EOF
 }
