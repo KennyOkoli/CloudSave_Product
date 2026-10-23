@@ -64,7 +64,7 @@ resource "aws_subnet" "db_subnet" {
     count = 2
     vpc_id = aws_vpc.CloudSave.id
     cidr_block = "172.0.${count.index + 200}.0/24"
-    availability_zone = data.aws_availability_zones.africa_az.names[2]
+    availability_zone = data.aws_availability_zones.africa_az.names[count.index]
     map_public_ip_on_launch = true  # For now the db is in a public subnet for dev use
 
     tags={
