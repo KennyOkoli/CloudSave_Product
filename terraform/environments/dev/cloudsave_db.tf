@@ -42,6 +42,7 @@ resource "aws_security_group" "mysql_db_sg" {
     vpc_id = aws_vpc.CloudSave.id
 }
 
+
 resource "aws_security_group_rule" "mysql_db_sg_rule"{
     security_group_id = aws_security_group.mysql_db_sg.id
     cidr_blocks = [var.public_ip]
@@ -65,8 +66,6 @@ resource "aws_subnet" "db_subnet" {
     vpc_id = aws_vpc.CloudSave.id
     cidr_block = "172.0.${count.index + 200}.0/24"
     availability_zone = data.aws_availability_zones.africa_az.names[count.index]
-    map_public_ip_on_launch = true  # For now the db is in a public subnet for dev use
-
     tags={
         name = var.db_subnet_tags[count.index]
     }
@@ -98,16 +97,56 @@ resource "aws_network_acl_association" "db_subnet_to_nacl" {
     network_acl_id = aws_network_acl.db_nacl.id
 }
 
-resource "aws_route_table" "db_route" {
+resource "aws_route_table" "db_prv_route" {
     vpc_id = aws_vpc.CloudSave.id
-    route{
-        cidr_block = var.public_ip
-        gateway_id = aws_internet_gateway.CS_gateway.id
-    }
 }
 
 resource "aws_route_table_association" "db_subnet_to_route" {
     count = 2
-    route_table_id = aws_route_table.db_route.id
+    route_table_id = aws_route_table.db_prv_route.id
     subnet_id = aws_subnet.db_subnet[count.index].id
+}
+
+resource "aws_instance" "db_ec2_jumphost" {
+    ami = "ami-08c46876c64a927b8"
+    instance_type = "t3.micro"
+    subnet_id = aws_subnet.db_subnet[0].id
+    vpc_security_group_ids = [aws_security_group.mysql_db_sg.id]
+    iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.name
+
+    user_data = <<EOF
+    #!/bin/bash
+
+    exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+    dnf update -y
+    systemctl start amazon-ssm-agent
+    systemctl enable amazon-ssm-agent
+    
+    EOF
+}
+
+resource "aws_iam_role" "ec2_role" {
+   name = "ec2_role"
+   assume_role_policy = jsonencode(
+     {
+        Version = "2012-10-17"
+        Statement = [
+          {
+            Effect = "Allow"
+            Principal = {"Service" = "ec2.amazonaws.com"}
+            Action = ["sts:AssumeRole"]
+          }
+        ]
+     }
+   )
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_role_policy" {
+    role = aws_iam_role.ec2_role.id
+    policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_instance_profile" "ec2_instance_profile" {
+    name = "ec2_instance_profile"
+    role = aws_iam_role.ec2_role.name   
 }
