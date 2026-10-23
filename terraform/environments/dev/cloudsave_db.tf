@@ -75,7 +75,6 @@ resource "aws_network_acl" "db_nacl" {
 }
 
 resource "aws_network_acl_association" "db_subnet_to_nacl" {
-    count = 2
     subnet_id = aws_subnet.db_subnet.id
     network_acl_id = aws_network_acl.db_nacl.id
 }
@@ -89,7 +88,6 @@ resource "aws_route_table" "db_route" {
 }
 
 resource "aws_route_table_association" "db_subnet_to_route" {
-    count = 2
     route_table_id = aws_route_table.db_route.id
     subnet_id = aws_subnet.db_subnet.id
 }
