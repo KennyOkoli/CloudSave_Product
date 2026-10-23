@@ -37,3 +37,7 @@ variable "key_name" {
 variable "db_subnet_tags" {
     default = "subnet-1"
 }
+
+variable "db-subnet-cidr" {
+    default = "172.0.200.0/24"
+}

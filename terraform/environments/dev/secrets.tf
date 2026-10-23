@@ -8,5 +8,8 @@ resource "aws_secretsmanager_secret_version" "db-secrets" {
 }
 
 variable "db-credentials" {
-  default = 
-}*/
+  default = {
+    username = "Kenny"
+    password = "kenny2007"
+  }
+} */

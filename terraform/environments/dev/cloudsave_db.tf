@@ -45,7 +45,7 @@ resource "aws_security_group_rule" "mysql_db_sg_rule_eg"{
 
 resource "aws_subnet" "db_subnet" {
     vpc_id = aws_vpc.CloudSave.id
-    cidr_block = "172.0.${count.index + 200}.0/24"
+    cidr_block = var.db-subnet-cidr
     availability_zone = data.aws_availability_zones.africa_az.names[0]
     map_public_ip_on_launch = true  # For now the db is in a public subnet for dev use
 
@@ -76,7 +76,7 @@ resource "aws_network_acl" "db_nacl" {
 
 resource "aws_network_acl_association" "db_subnet_to_nacl" {
     count = 2
-    subnet_id = aws_subnet.db_subnet[count.index].id
+    subnet_id = aws_subnet.db_subnet.id
     network_acl_id = aws_network_acl.db_nacl.id
 }
 
@@ -91,5 +91,5 @@ resource "aws_route_table" "db_route" {
 resource "aws_route_table_association" "db_subnet_to_route" {
     count = 2
     route_table_id = aws_route_table.db_route.id
-    subnet_id = aws_subnet.db_subnet[count.index].id
+    subnet_id = aws_subnet.db_subnet.id
 }
