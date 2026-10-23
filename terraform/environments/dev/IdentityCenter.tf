@@ -7,7 +7,7 @@ locals {
     Account_arn = tolist(data.aws_ssoadmin_instances.center.arns)[0]
 }
 
-/*
+
 resource "aws_identitystore_user" "jeff" {
     provider = aws.identity_center
     identity_store_id = local.idStore_id
@@ -20,7 +20,7 @@ resource "aws_identitystore_user" "jeff" {
     emails{
         value = var.jeff_email
     }
-}*/
+}
 
 resource "aws_ssoadmin_permission_set" "use_s3" {
     name = "use-s3"
@@ -50,5 +50,14 @@ resource "aws_ssoadmin_permission_set_inline_policy" "use_s3_attachcment" {
     instance_arn = local.Account_arn
 }
 
-# Checkout region for ssoadmin, does the ssoadmin_region work in a similar way to provider:aws:region:
-# Reserch more on identity_store
+resource "aws_ssoadmin_account_assignment" "jeff-account-permission" {
+    provider = aws.identity_center
+    instance_arn = local.Account_arn
+    permission_set_arn = aws_ssoadmin_permission_set.use_s3.arn
+
+    principal_type = "USER"
+    principal_id = aws_identitystore_user.jeff.id
+
+    target_id = var.account
+    target_type = "AWS_ACCOUNT"
+}
