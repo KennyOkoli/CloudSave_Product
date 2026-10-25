@@ -1,0 +1,5 @@
+What I have come to understand about infrastructure and application code and deployment using github
+infrastructure:
+1) Seperate dirs for /dev and /prod. /dev gives a prototype of the prod, which is useful for testing
+2) Using modules help infrastructure code to be reusable
+3) CI/CD workflow for /dev listens to changes on the module and /dev dir, while changes to module and /prod triggers changes to /prod

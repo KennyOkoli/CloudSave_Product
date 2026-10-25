@@ -26,3 +26,7 @@ module "IdentityCenter" {
     s3-arn = module.s3.s3-arn
     secret-arn = module.secrets.secret-manager-arn
 }
+
+module "github" {
+    source = "../../modules/github"
+}
