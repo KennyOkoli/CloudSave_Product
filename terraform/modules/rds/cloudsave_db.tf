@@ -59,7 +59,7 @@ resource "aws_db_parameter_group" "db_parameter" {
 
 resource "aws_db_subnet_group" "db_subnet_group" {
     name = "db_subnet_group"
-    subnet_ids = aws_subnet_db_subnet[*].id
+    subnet_ids = aws_subnet.db_subnet[*].id
 }
 
 variable "vpc-id" {}
@@ -135,6 +135,8 @@ resource "aws_route_table_association" "db_subnet_to_route" {
     subnet_id = aws_subnet.db_subnet[count.index].id
 }
 
+variable "private_subnets" {}
+
 resource "aws_instance" "db_ec2_jumphost" {
     ami = "ami-0527144c5a042f57d"
     instance_type = "t3.micro"
@@ -152,6 +154,7 @@ resource "aws_instance" "db_ec2_jumphost" {
     
     EOF
 }
+
 resource "aws_security_group" "ec2_sg" {
     name = "ec2-db-sg"
     vpc_id = var.vpc-id
