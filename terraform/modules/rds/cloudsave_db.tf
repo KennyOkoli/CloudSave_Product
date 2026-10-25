@@ -57,11 +57,9 @@ resource "aws_db_parameter_group" "db_parameter" {
     }
 }
 
-variable "private_subnets" {}
-
 resource "aws_db_subnet_group" "db_subnet_group" {
     name = "db_subnet_group"
-    subnet_ids = var.private_subnets
+    subnet_ids = aws_subnet_db_subnet[*].id
 }
 
 variable "vpc-id" {}
