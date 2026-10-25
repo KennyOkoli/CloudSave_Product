@@ -9,3 +9,4 @@ output "private-subnets" {
 output "azones" {
     value = data.aws_availability_zones.africa_az.names
 }
+# For a commit

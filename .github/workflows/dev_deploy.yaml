@@ -7,6 +7,7 @@ on:
     paths:
       - 'terraform/environments/dev/**'
       - '.github/workflows/dev_deploy.yaml'
+      - 'terraform/modules/**'
 
 defaults: 
   run: # sets the workdir where jobs will be ran 
