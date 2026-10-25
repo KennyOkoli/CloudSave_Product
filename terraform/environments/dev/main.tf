@@ -5,7 +5,6 @@ module "vpc" {
 module "rds" {
     source = "../../modules/rds"   
     secret-manager-id = module.secrets.secret-id
-    private_subnets = module.vpc.private-subnets
     az = module.vpc.azones
     vpc-id = module.vpc.vpc-id
 }
