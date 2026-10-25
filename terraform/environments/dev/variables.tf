@@ -1,3 +1,4 @@
+/*
 variable "account"{
     type = string
     default = "871145212791"
@@ -30,16 +31,22 @@ variable "public_subnet_tags"{
     default = ["pub-af-1a", "pub-af-1b"]
 }
 
-variable "key_name" {
-    default = "cs_key_pair"
-}
-
 variable "db_subnet_tags" {
     default = ["db-subnet-1", "db-subnet-2"]
 }
 
 variable "db-subnet-cidr" {
     default = "172.0.200.0/24"
+}
+
+variable "public_ip"{
+    type = string
+    default = "0.0.0.0/0"
+}
+
+variable "aws_region"{
+    type = string
+    default = "af-south-1"
 }
 
 variable "jeff_email" {
@@ -50,3 +57,7 @@ variable "jeff_email" {
 variable "identity_center_region" {
     default = "us-east-1"
 }
+
+variable "secret-arn" {
+    default = module.secrets.var.
+}*/
