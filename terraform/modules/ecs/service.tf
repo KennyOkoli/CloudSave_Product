@@ -1,5 +1,23 @@
 #resource "aws_ecs_service" "cloudsave-service" {}
 
+
+
+
+variable "vpc" {}
+
+resource "aws_security_group" "task-sg" {
+    name = "task-sg"
+    vpc_id = var.vpc
+}
+
+/*
+resource "aws_security_group_rule" "task-rule-1" {
+    type = "ingress"
+
+}*/
+
+
+
 resource "aws_iam_role" "task-role" {
     name = "task-role"
     assume_role_policy = data.aws_iam_policy_document.task-def_trust.json

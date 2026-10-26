@@ -35,4 +35,5 @@ module "ecs" {
     source = "../../modules/ecs"
     s3 = module.s3.s3-arn
     secrets = module.secrets.secret-manager-arn
+    vpc = module.vpc.vpc-id
 }

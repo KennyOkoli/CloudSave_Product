@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "task-def_trust" {
       effect = "Allow"
       principals {
         type = "Service"
-        identifiers = ["ecs-task.amazonaws.com", "ecs.amazonaws.com"]
+        identifiers = ["ecs-tasks.amazonaws.com", "ecs.amazonaws.com"]
       }
       actions = ["sts:AssumeRole"]
     }
