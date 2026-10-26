@@ -17,9 +17,9 @@ resource "aws_launch_template" "ec2-template" {
 resource "aws_autoscaling_group" "ec2-autoscale" {
     name = "ec2-autoscale"
     vpc_zone_identifier = var.vpc-prv-subnets
-    desired_capacity = 4
+    desired_capacity = 2
     min_size = 2
-    max_size = 3
+    max_size = 4
     health_check_type = "EC2"
     health_check_grace_period = 5
 
@@ -27,6 +27,16 @@ resource "aws_autoscaling_group" "ec2-autoscale" {
       id = aws_launch_template.ec2-template.id
       version = "$Latest"
     }
+    instance_refresh {
+      strategy = "Rolling"
+
+      preferences {
+        min_healthy_percentage = 100
+        instance_warmup = 300
+      }
+
+    triggers = ["launch_template"]
+  }
 }
 
 resource "aws_security_group" "ec2-compute-sg" {

@@ -6,3 +6,4 @@ systemctl start amazon-ssm-agent
  
 echo "ECS_CLUSTER=cloudsave-cluster" > /etc/ecs/ecs.config
 systemctl restart ecs
+systemctl restart cloud-final.service
