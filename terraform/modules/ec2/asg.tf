@@ -19,7 +19,7 @@ resource "aws_autoscaling_group" "ec2-autoscale" {
     vpc_zone_identifier = var.vpc-prv-subnets
     desired_capacity = 2
     min_size = 2
-    max_size = 3
+    max_size = 4
     health_check_type = "EC2"
     health_check_grace_period = 5
 
