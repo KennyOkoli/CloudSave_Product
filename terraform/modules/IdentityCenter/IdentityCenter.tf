@@ -78,8 +78,8 @@ data "aws_iam_policy_document" "use_s3_policy" {
          ]
        resources= [
         var.ec2-arn,
-        "arn:aws:ssm:af-south-1::document/SSM-SessionManagerRunShell",
-        "arn:aws:ssm:af-south-1::document/AWS-StartPortForwardingSessionToRemoteHost"
+        "arn:aws:ssm:af-south-1:871145212791:document/SSM-SessionManagerRunShell",
+        "arn:aws:ssm:af-south-1:871145212791:document/AWS-StartPortForwardingSessionToRemoteHost"
       ]
     }
     statement {
