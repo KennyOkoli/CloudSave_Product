@@ -26,7 +26,7 @@ resource "aws_ecs_service" "cloudsave-ecs"{
     }
     ordered_placement_strategy {
        type = "spread"
-       field = "instanceID"
+       field = "instanceId"
     }
     lifecycle {
       ignore_changes = [task_definition]

@@ -9,7 +9,6 @@ resource "aws_launch_template" "ec2-template" {
     instance_type = "t3.micro"
     vpc_security_group_ids = [aws_security_group.ec2-compute-sg.id]
     iam_instance_profile {
-      name = "ec2-instance-profile"
       arn = aws_iam_instance_profile.ec2-profile.arn 
     }
     user_data = <<EOF
