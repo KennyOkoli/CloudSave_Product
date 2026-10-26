@@ -24,7 +24,6 @@ resource "aws_autoscaling_group" "ec2-autoscale" {
     health_check_grace_period = 5
 
     launch_template {
-      name = "asg-launch"
       id = aws_launch_template.ec2-template.id
       version = "$Latest"
     }
