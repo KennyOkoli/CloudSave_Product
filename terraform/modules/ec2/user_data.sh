@@ -4,5 +4,5 @@ dnf update -y
 systemctl enable amazon-ssm-agent
 systemctl start amazon-ssm-agent
  
-echo "ECS_CLUSTER=cs_container_cluster" > /etc/ecs/ecs.config
+echo "ECS_CLUSTER=cloudsave-cluster" > /etc/ecs/ecs.config
 systemctl restart ecs
