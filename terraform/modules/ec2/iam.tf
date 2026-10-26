@@ -5,7 +5,7 @@ data "aws_iam_policy_document" "ec2-trust" {
             type = "Service"
             identifiers = ["ec2.amazonaws.com"]
         }
-        resources = ["sts:AssumeRole"]
+        actions = ["sts:AssumeRole"]
     }
 }
 

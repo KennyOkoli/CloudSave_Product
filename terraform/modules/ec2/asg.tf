@@ -43,7 +43,7 @@ resource "aws_autoscaling_group" "ec2-autoscale" {
 }
 
 resource "aws_security_group" "ec2-compute-sg" {
-    name = "task-sg"
+    name = "ec2-task-sg"
     vpc_id = var.vpc_id
 }
 

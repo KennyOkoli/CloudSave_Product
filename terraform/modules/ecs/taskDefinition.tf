@@ -3,6 +3,7 @@ resource "aws_ecs_task_definition" "cloudsave-task-def" {
     requires_compatibilities = ["EC2"]
     family = "web-app"
     execution_role_arn = aws_iam_role.task-def-role.arn
+    task_role_arn = aws_iam_role.task-role.arn
 
     container_definitions = jsonencode([
         {

@@ -13,7 +13,6 @@ resource "aws_ecs_service" "cloudsave-ecs"{
     task_definition = aws_ecs_task_definition.cloudsave-task-def.arn
     desired_count = 4
     launch_type = "EC2"
-    iam_role = aws_iam_role.task-role.arn
 
     load_balancer {
        target_group_arn = var.target-arn
