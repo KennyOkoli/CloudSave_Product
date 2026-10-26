@@ -11,18 +11,7 @@ resource "aws_launch_template" "ec2-template" {
     iam_instance_profile {
       arn = aws_iam_instance_profile.ec2-profile.arn 
     }
-    user_data = <<EOF
-    #!/bin/bash
-    exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
-
-    dnf update -y
-    systemctl enable amazon-ssm-agent
-    systemctl start amazon-ssm-agent
-
-    echo "ECS_CLUSTER=cs_container_cluster" > /etc/ecs/ecs.config
-    systemctl restart ecs
-
-    EOF
+    user_data = filebase64("user_data.sh")
 }
 
 resource "aws_autoscaling_group" "ec2-autoscale" {
