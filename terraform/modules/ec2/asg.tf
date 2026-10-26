@@ -17,7 +17,7 @@ resource "aws_launch_template" "ec2-template" {
 resource "aws_autoscaling_group" "ec2-autoscale" {
     name = "ec2-autoscale"
     vpc_zone_identifier = var.vpc-prv-subnets
-    desired_capacity = 1
+    desired_capacity = 2
     min_size = 2
     max_size = 3
     health_check_type = "EC2"
