@@ -1,6 +1,9 @@
-resource "aws_iam_openid_connect_provider" "github-id" {
-    url = "https://token.actions.githubusercontent.com"
-    client_id_list = ["sts.amazonaws.com"]
+data "aws_iam_openid_connect_provider" "github-id" {
+    arn = "arn:aws:iam::871145212791:oidc-provider/token.actions.githubusercontent.com"
+}
+
+locals {
+  oidc_arn = data.aws_iam_openid_connect_provider.github-id.arn
 }
 
 data "aws_iam_policy_document" "oidc_policy_doc" {
@@ -8,7 +11,7 @@ data "aws_iam_policy_document" "oidc_policy_doc" {
         effect = "Allow"
         principals {
             type = "Federated"
-            identifiers = [aws_iam_openid_connect_provider.github-id.arn]
+            identifiers = [local.oidc_arn]
         }
         actions = ["sts:AssumeRoleWithWebIdentity"]
         condition {
@@ -19,7 +22,7 @@ data "aws_iam_policy_document" "oidc_policy_doc" {
         condition {
             test = "StringLike"
             variable = "token.actions.githubusercontent.com:sub"
-            values = ["repo:KennyOkoli@334668853/CloudSave@1426990249:*"]
+            values = ["repo:KennyOkoli@334668853/CloudSave@1426990249:*"] # In future projects find out how to streamline this permission
         }       
     }
 }
@@ -35,7 +38,7 @@ data "aws_iam_policy_document" "github-policy-doc" {
       actions = [
         "ecr:GetAuthorisationToken"
       ]
-      resources = ["*"]
+      resources = ["*"] # Similar to ecr login
     }
     statement {
       effect = "Allow"
@@ -61,10 +64,6 @@ data "aws_iam_policy_document" "github-policy-doc" {
     statement {
       effect = "Allow"
       actions = ["iam:PassRole"]
-      resources = ["*"]
+      resources = ["*"] # Specify what role to pass
     }
-    # Github needs permissions to pull from ecr
-    # Upload image into ecr
-    # Update ecs
-    # update task def
 }

@@ -30,3 +30,9 @@ module "IdentityCenter" {
 module "github" {
     source = "../../modules/github"
 }
+
+module "ecs" {
+    source = "../../modules/ecs"
+    s3 = module.s3.s3-arn
+    secrets = module.secrets.secret-manager-arn
+}

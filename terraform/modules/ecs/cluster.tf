@@ -10,7 +10,7 @@ terraform {
 resource "aws_ecs_cluster" "cloudsave-cluster" {
     name = "cloudsave-cluster"
     setting {
-        name = "containerInsight"
+        name = "containerInsights"
         value = "enabled"
     }
 }

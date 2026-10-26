@@ -1,6 +1,6 @@
 resource "aws_ecs_task_definition" "cloudsave-task-def" {
     network_mode = "awsvpc"
-    requires_compatibilities = "EC2"
+    requires_compatibilities = ["EC2"]
     family = "web-app"
     execution_role_arn = aws_iam_role.task-def-role.arn
 

@@ -24,7 +24,7 @@ variable "aws_region"{
 variable "s3-arn" {}
 variable "secret-arn" {}
 
-data "aws_ssoadmin_instances" "center" {}
+data "aws_ssoadmin_instances" "center" {} # How does terraform know which ssoadmin instance to use
 
 locals {
     idStore_id = tolist(data.aws_ssoadmin_instances.center.identity_store_ids)[0]
@@ -84,6 +84,7 @@ resource "aws_ssoadmin_managed_policy_attachment" "access_ssm" {
     permission_set_arn = aws_ssoadmin_permission_set.use_s3.arn
     managed_policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
+
 variable "account"{
     type = string
     default = "871145212791"

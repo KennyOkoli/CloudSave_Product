@@ -22,8 +22,11 @@ data "aws_iam_policy_document" "task-actions" {
           "secretsmanager:GetSecretValue"
        ]
        resources = [
-          aws_s3_bucket.cloudsave_s3.arn,
-          aws_secretsmanager_secret.cloudsave-db-secrets.arn
+          var.s3,
+          var.secrets
        ]
     }
 }
+
+variable "s3" {}
+variable "secrets" {}
