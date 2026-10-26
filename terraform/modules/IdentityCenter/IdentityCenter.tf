@@ -77,7 +77,9 @@ data "aws_iam_policy_document" "use_s3_policy" {
         "ssm:StartSession"
          ]
        resources= [
-        var.ec2-arn
+        var.ec2-arn,
+        "arn:aws:ssm:af-south-1::document/SSM-SessionManagerRunShell",
+        "arn:aws:ssm:af-south-1::document/AWS-Star*PortForwardingSessionToRemoteHost"
       ]
     }
     statement {
