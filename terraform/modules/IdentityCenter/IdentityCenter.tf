@@ -71,18 +71,32 @@ data "aws_iam_policy_document" "use_s3_policy" {
         ]
         resources = ["*"]
     }
+    statement {
+       effect= "Allow"
+       actions = [
+        "ssm:StartSession"
+         ]
+       resources= [
+        var.ec2-arn
+      ]
+    }
+    statement {
+       effect= "Allow"
+       actions = [
+        "ssm:TerminateSession",
+        "ssm:ResumeSession"
+      ]
+      resources = ["*"]
+    }
+  
 }
+
+variable "ec2-arn" {}
 
 resource "aws_ssoadmin_permission_set_inline_policy" "use_s3_attachcment" {
     permission_set_arn = aws_ssoadmin_permission_set.use_s3.arn
     inline_policy = data.aws_iam_policy_document.use_s3_policy.json
     instance_arn = local.Account_arn
-}
-
-resource "aws_ssoadmin_managed_policy_attachment" "access_ssm" {
-    instance_arn = local.Account_arn
-    permission_set_arn = aws_ssoadmin_permission_set.use_s3.arn
-    managed_policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
 variable "account"{

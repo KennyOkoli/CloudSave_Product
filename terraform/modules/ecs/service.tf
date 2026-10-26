@@ -32,8 +32,6 @@ resource "aws_ecs_service" "cloudsave-ecs"{
     lifecycle {
       ignore_changes = [task_definition]
     }
-    # Add placement
-    # Add lifecylce
 }
 
 resource "aws_security_group" "task-sg" {
@@ -41,27 +39,19 @@ resource "aws_security_group" "task-sg" {
     vpc_id = var.vpc
 }
 
-/*
+variable "alb_sg" {}
+
 resource "aws_security_group_rule" "task-rule-1" {
     type = "ingress"
     security_group_id = aws_security_group.task-sg.id
-    source = # load balancer
+    source_security_group_id = var.alb_sg
     protocol = "tcp"
     from_port = 4000
     to_port = 4000
 }
 
-resource "aws_security_group_rule" "task-rule-2" {
-    type = "ingress"
-    security_group_id = aws_security_group.task-sg.id
-    source = var.db-sg
-    protocol = "tcp"
-    from_port = 0
-    to_port = 65535
-}
-
-resource "aws_security_group_rule" "task-rule-1" {
-    type = "ingress"
+resource "aws_security_group_rule" "task-rule-3" {
+    type = "egress"
     security_group_id = aws_security_group.task-sg.id
     cidr_blocks = [var.public]
     protocol = "tcp"
@@ -70,5 +60,7 @@ resource "aws_security_group_rule" "task-rule-1" {
 }
 
 resource "aws_network_acl_association" "task-subnet-nacl" {
-    network_id
-}*/
+    count = 2
+    network_acl_id = var.nacl
+    subnet_id = var.private-subnets[count.index]
+}

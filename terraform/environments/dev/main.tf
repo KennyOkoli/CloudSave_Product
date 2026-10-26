@@ -25,6 +25,7 @@ module "IdentityCenter" {
     }
     s3-arn = module.s3.s3-arn
     secret-arn = module.secrets.secret-manager-arn
+    ec2-arn = module.rds.ec2_arn
 }
 
 module "github" {
@@ -41,6 +42,7 @@ module "ecs" {
     nacl = module.vpc.vpc-nacls
     public = module.vpc.public-cidr
     target-arn = module.ec2.target
+    alb_sg = module.ec2.alb-sg
 }
 
 module "ec2" {

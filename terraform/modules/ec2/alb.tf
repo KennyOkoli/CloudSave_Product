@@ -42,7 +42,7 @@ resource "aws_alb_listener" "cloudsave-alb-listener" {
 }
 
 resource "aws_security_group" "alb-sg" {
-    name = "task-sg"
+    name = "alb-sg"
     vpc_id = var.vpc_id
 }
 
