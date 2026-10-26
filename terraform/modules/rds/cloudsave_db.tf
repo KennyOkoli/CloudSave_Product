@@ -29,7 +29,7 @@ data "aws_secretsmanager_secret_version" "db-secrets" {
 locals{
     db_credentials = jsondecode(data.aws_secretsmanager_secret_version.db-secrets.secret_string)
  }
-
+/*
 resource "aws_db_instance" "CloudSave_db"{
     db_name = "CloudSave_db"
     identifier = "cloudsave"
@@ -46,7 +46,7 @@ resource "aws_db_instance" "CloudSave_db"{
     vpc_security_group_ids = [aws_security_group.mysql_db_sg.id]
     parameter_group_name = aws_db_parameter_group.db_parameter.name
 }
-
+*/
 resource "aws_db_parameter_group" "db_parameter" {
     name_prefix = "mysql84-parameter"
     family = "mysql8.4"

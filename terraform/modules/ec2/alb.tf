@@ -18,7 +18,7 @@ resource "aws_alb_target_group" "cloudsave-target-group" {
     unhealthy_threshold = 2
     }
 }
-
+/*
 resource "aws_alb" "cloudsave-alb" {
     name = "cloudsave-alb"
     security_groups = [aws_security_group.alb-sg.id]
@@ -39,7 +39,7 @@ resource "aws_alb_listener" "cloudsave-alb-listener" {
         }
       }
     }
-}
+}*/
 
 resource "aws_security_group" "alb-sg" {
     name = "alb-sg"
