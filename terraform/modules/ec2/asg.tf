@@ -3,7 +3,7 @@ variable "nacl" {}
 variable "public-cidr" {}
 variable "vpc_id" {}
 
-/*
+
 resource "aws_launch_template" "ec2-template" {
     image_id = "ami-0016bff49059ce56b"
     instance_type = "t3.micro"
@@ -17,9 +17,9 @@ resource "aws_launch_template" "ec2-template" {
 resource "aws_autoscaling_group" "ec2-autoscale" {
     name = "ec2-autoscale"
     vpc_zone_identifier = var.vpc-prv-subnets
-    desired_capacity = 0
-    min_size = 0
-    max_size = 4
+    desired_capacity = 1
+    min_size = 2
+    max_size = 3
     health_check_type = "EC2"
     health_check_grace_period = 5
 
@@ -38,7 +38,7 @@ resource "aws_autoscaling_group" "ec2-autoscale" {
     triggers = ["launch_template"]
   }
 }
-*/
+
 resource "aws_security_group" "ec2-compute-sg" {
     name = "ec2-task-sg"
     vpc_id = var.vpc_id
