@@ -11,7 +11,7 @@ resource "aws_ecs_service" "cloudsave-ecs"{
     name = "cloudsave-ecs"
     cluster = aws_ecs_cluster.cloudsave-cluster.id
     task_definition = aws_ecs_task_definition.cloudsave-task-def.arn
-    desired_count = 0
+    desired_count = 2
     launch_type = "EC2"
 
     load_balancer {

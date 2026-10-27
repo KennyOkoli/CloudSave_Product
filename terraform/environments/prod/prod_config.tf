@@ -1,0 +1,32 @@
+terraform{
+    backend "s3" {
+        bucket = "cloudsave-prod-tfstate"
+        key = "prod/terraform.tfstate"
+        region = "af-south-1"
+    }
+    
+    required_providers{
+        aws ={
+            source = "hashicorp/aws"
+            version = "~>6.0"
+        }
+    }
+}
+
+provider "aws"{
+    region = var.aws_region
+}
+
+provider "aws" {
+    alias = "identity_center"
+    region = var.identity_center_region 
+}
+
+variable "identity_center_region" {
+    default = "us-east-1"
+}
+
+variable "aws_region"{
+    type = string
+    default = "af-south-1"
+}
