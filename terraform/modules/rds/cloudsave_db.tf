@@ -30,6 +30,7 @@ locals{
     db_credentials = jsondecode(data.aws_secretsmanager_secret_version.db-secrets.secret_string)
  }
 
+/*
 resource "aws_db_instance" "CloudSave_db"{
     db_name = "CloudSave_db"
     identifier = "cloudsave"
@@ -56,7 +57,7 @@ resource "aws_db_parameter_group" "db_parameter" {
       value = 500
     }
 }
-
+*/
 resource "aws_db_subnet_group" "db_subnet_group" {
     name = "db_subnet_group"
     subnet_ids = aws_subnet.db_subnet[*].id

@@ -3,3 +3,27 @@ infrastructure:
 1) Seperate dirs for /dev and /prod. /dev gives a prototype of the prod, which is useful for testing
 2) Using modules help infrastructure code to be reusable
 3) CI/CD workflow for /dev listens to changes on the module and /dev dir, while changes to module and /prod triggers changes to /prod
+
+Docs:
+CloudSave Configuration
+
+Database
+----------
+DB_HOST
+DB_PORT
+DB_NAME
+DB_USERNAME
+DB_PASSWORD
+
+Storage
+--------
+S3_BUCKET
+
+Application
+-----------
+NODE_ENV
+PORT
+
+AWS
+---
+AWS_REGION
