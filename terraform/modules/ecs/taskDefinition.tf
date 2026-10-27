@@ -8,7 +8,7 @@ variable "db_name" {}
 variable "db_username" {}
 variable "db_password" {}
 variable "s3_bucket" {}
-
+/*
 resource "aws_ecs_task_definition" "cloudsave-task-def" {
     network_mode = "awsvpc"
     requires_compatibilities = ["EC2"]
@@ -53,4 +53,4 @@ resource "aws_ecs_task_definition" "cloudsave-task-def" {
         }
     ])
 }
-
+*/
