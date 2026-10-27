@@ -31,7 +31,7 @@ module "IdentityCenter" {
 module "github" {
     source = "../../modules/github"
 }
-/*
+
 module "ecs" {
     source = "../../modules/ecs"
     s3 = module.s3.s3-arn
@@ -43,11 +43,11 @@ module "ecs" {
     public = module.vpc.public-cidr
     target-arn = module.ec2.target
     alb_sg = module.ec2.alb-sg
-    db_name = module.rds.db_name
+   /* db_name = module.rds.db_name
     db_username = module.rds.db_username
-    db_password = module.rds.db_password
+    db_password = module.rds.db_password*/
     s3_bucket = module.s3.bucket-name
-}*/
+}
 
 module "ec2" {
     source = "../../modules/ec2"
