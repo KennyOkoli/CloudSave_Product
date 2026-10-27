@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - env:
+        env:
           SKIP_DB_CHECK: false
           SKIP_S3_CHECK: false
           ENABLE_BACKGROUND_JOBS: true
