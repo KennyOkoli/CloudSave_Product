@@ -31,10 +31,15 @@ if (!skipS3Check){
   }
 }
 
-const cleanup = startPendingCleanup();
+if (process.env.ENABLE_BACKGROUND_JOBS === "true") {
+  const cleanup = startPendingCleanup();
+}
+
 const server = createApp().listen(config.port, () =>
-  console.log(`Server running on http://localhost:${config.port}`),
+console.log(`Server running on http://localhost:${config.port}`),
 );
+
+
 
 for (const signal of ["SIGINT", "SIGTERM"] as const) {
   process.on(signal, () => {
