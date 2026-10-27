@@ -17,14 +17,18 @@ if (!skipDbCheck) {
   }
 }
 
-try {
-  await ensureBucket();
-} catch (err) {
-  console.error(
-    `Can't reach S3 at ${config.s3.endpoint ?? "AWS"}. Is it running? (docker compose up -d)`,
-  );
-  console.error(err);
-  process.exit(1);
+const skipS3Check = process.env.SKIP_S3_CHECK === "true";
+
+if (!skipS3Check){
+  try {
+    await ensureBucket();
+  } catch (err) {
+    console.error(
+      `Can't reach S3 at ${config.s3.endpoint ?? "AWS"}. Is it running? (docker compose up -d)`,
+    );
+    console.error(err);
+    process.exit(1);
+  }
 }
 
 const cleanup = startPendingCleanup();

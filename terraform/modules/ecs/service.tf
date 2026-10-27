@@ -7,7 +7,7 @@ variable "secrets" {}
 variable "vpc" {}
 variable "target-arn" {}
 
-/*resource "aws_ecs_service" "cloudsave-ecs"{
+resource "aws_ecs_service" "cloudsave-ecs"{
     name = "cloudsave-ecs"
     cluster = aws_ecs_cluster.cloudsave-cluster.id
     task_definition = aws_ecs_task_definition.cloudsave-task-def.arn
@@ -30,8 +30,8 @@ variable "target-arn" {}
     }
     /*lifecycle {
       ignore_changes = [task_definition]
-    }
-}*/
+    }*/
+}
 
 resource "aws_security_group" "task-sg" {
     name = "task-sg"

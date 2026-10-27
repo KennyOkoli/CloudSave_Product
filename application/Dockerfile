@@ -1,10 +1,11 @@
-FROM node:22-slim
-WORKDIR /cloudsave
+FROM node:22-slim AS builder
+WORKDIR /cs
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci --omit=dev
 
+FROM node:22-slim
+WORKDIR /cloudsave
+COPY --from=builder /cs/node_modules ./node_modules
 COPY . .
-
-EXPOSE 4000
-CMD ["npm", "start"]
+CMD ["npm","run","start"]

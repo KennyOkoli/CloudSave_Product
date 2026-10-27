@@ -1,16 +1,11 @@
 # RustFS: an S3-compatible server (MinIO no longer publishes Docker images).
 services:
-  s3:
-    image: rustfs/rustfs:latest
+  cloudsave:
+    build: .
     ports:
-      - "9000:9000" # S3 API
-      - "9001:9001" # web console (login with the keys below)
+      - "2000:4000" # web console (login with the keys below)
     environment:
-      RUSTFS_ACCESS_KEY: localadmin
-      RUSTFS_SECRET_KEY: localadmin123
-      RUSTFS_CONSOLE_ENABLE: "true"
-    volumes:
-      - s3-data:/data
+      SKIP_DB_CHECK: true
+      SKIP_S3_CHECK: true
+    restart: "always"
 
-volumes:
-  s3-data:
