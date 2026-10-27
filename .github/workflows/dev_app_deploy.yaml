@@ -1,3 +1,4 @@
+name: Build image, push to ecr and update ecs
 on:
   push:
     branches:
@@ -10,7 +11,7 @@ permissions:
   contents: read
 
 defaults:
-  runs-on:
+  run:
    working-directory: application/
 
 jobs:
