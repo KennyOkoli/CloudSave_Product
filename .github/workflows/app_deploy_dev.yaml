@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - "application/**"
+      - "app_deploy_dev.yaml"
 
 permissions:
   id-token: write
