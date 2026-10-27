@@ -28,7 +28,7 @@ module "IdentityCenter" {
     secret-arn = module.secrets.secret-manager-arn
     ec2-arn = module.rds.ec2_arn
 }*/
-
+/*
 module "github" {
     source = "../../modules/github"
 }
@@ -58,4 +58,4 @@ module "ec2" {
     nacl = module.vpc.vpc-nacls
     public-subnet = module.vpc.vpc-public-subnet
     ecs-sg-var = module.ecs.ecs-sg
-}
+}*/

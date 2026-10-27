@@ -12,16 +12,16 @@ permissions:
 
 defaults:
   runs-on:
-   working-directory: "application/"
+   working-directory: application/
 
 jobs:
   build_and_test: # This test pulls my repo files including the docker image and runs the node npm test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: docker build -t chatbot .
-      - run: docker run -p 3000:3000 -d chatbot
+      - run: docker build -t cloudsave .
+      - run: docker run -p 4000:4000 -d cloudsave
       - run: |
               sleep 15
-              curl --fail http://localhost:3000
+              curl --fail http://localhost:4000
    
