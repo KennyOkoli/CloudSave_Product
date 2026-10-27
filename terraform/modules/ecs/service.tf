@@ -28,9 +28,9 @@ resource "aws_ecs_service" "cloudsave-ecs"{
        type = "spread"
        field = "instanceId"
     }
-    /*lifecycle {
+    lifecycle {
       ignore_changes = [task_definition]
-    }*/
+    }
 }
 
 resource "aws_security_group" "task-sg" {
