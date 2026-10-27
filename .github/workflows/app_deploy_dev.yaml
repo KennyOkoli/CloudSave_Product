@@ -22,5 +22,5 @@ jobs:
       - run: docker build -t cloudsave .
       - run: docker run -p 4000:4000 -d -e SKIP_DB_CHECK=true -e SKIP_DB_CHECK=true cloudsave
       - run: |
-              sleep 15
+              sleep 40
               curl --fail http://localhost:4000
