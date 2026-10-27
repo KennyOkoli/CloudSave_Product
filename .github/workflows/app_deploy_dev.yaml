@@ -5,7 +5,7 @@ on:
       - main
     paths:
       - "application/**"
-      - "/.github/workflows/app_deploy_dev.yaml"
+      - ".github/workflows/app_deploy_dev.yaml"
 
 permissions:
   id-token: write
