@@ -7,6 +7,8 @@ import { errorHandler, notFound } from "./middleware/errors.js";
 
 export function createApp() {
   const app = express();
+  // Behind the ALB: trust X-Forwarded-Proto so req.secure reflects the visitor's HTTPS.
+  app.set("trust proxy", true);
   app.use(express.json());
   app.use(cookieParser());
   app.use(express.static("public"));

@@ -23,7 +23,8 @@ export function startSession(res: Response, userId: string) {
   res.cookie(COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
-    secure: config.isProd,
+    // HTTPS-only when the request came over HTTPS (the ALB reports it via X-Forwarded-Proto).
+    secure: res.req.secure,
     maxAge: SESSION_DAYS * 24 * 60 * 60 * 1000,
   });
 }

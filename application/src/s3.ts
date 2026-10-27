@@ -16,7 +16,7 @@ const { bucket } = config.s3;
 
 const s3 = new S3Client({
   endpoint: config.s3.endpoint,
-  region: config.s3.region,
+  // Region comes from AWS_REGION (set automatically on ECS).
   // Local S3 servers need http://host/bucket/key instead of http://bucket.host/key.
   forcePathStyle: Boolean(config.s3.endpoint),
   // Without keys the SDK falls back to the environment's own AWS credentials (e.g. an IAM role).
@@ -39,24 +39,18 @@ export async function ensureBucket() {
     console.log(`Created bucket "${bucket}"`);
   }
 
-  // The browser uploads straight to S3 from another origin, so the bucket must allow it (CORS).
-  await setBucketCors().catch((err) => {
-    if (config.s3.endpoint) throw err;
-    console.warn(
-      `Could not set CORS on "${bucket}"; the bucket owner must allow PUT/GET from ${config.appOrigin}.`,
-      err.name,
-    );
-  });
+  // A real AWS bucket's CORS rule is managed in terraform; only a local S3 gets one set here.
+  if (config.s3.endpoint) await setLocalBucketCors();
 }
 
-function setBucketCors() {
+function setLocalBucketCors() {
   return s3.send(
     new PutBucketCorsCommand({
       Bucket: bucket,
       CORSConfiguration: {
         CORSRules: [
           {
-            AllowedOrigins: [config.appOrigin],
+            AllowedOrigins: [`http://localhost:${config.port}`],
             AllowedMethods: ["PUT", "GET"],
             AllowedHeaders: ["*"],
             MaxAgeSeconds: 3600,
