@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>S3 Uploads</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="module" src="/js/main.js"></script>
+  </head>
+  <body>
+    <!-- Signed out -->
+    <main id="auth-view" class="auth" hidden>
+      <h1 class="display">S3 Uploads</h1>
+      <p class="lede">Your images, stored in your own corner of the bucket.</p>
+
+      <div class="switch" role="tablist" aria-label="Account">
+        <button type="button" role="tab" data-mode="login" aria-selected="true">Log in</button>
+        <button type="button" role="tab" data-mode="register" aria-selected="false">Create account</button>
+      </div>
+
+      <form id="auth-form" novalidate>
+        <label>
+          <span>Username</span>
+          <input name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required />
+        </label>
+        <label>
+          <span>Password</span>
+          <input name="password" type="password" autocomplete="current-password" required />
+          <small id="password-hint" hidden>At least 8 characters</small>
+        </label>
+        <p id="auth-error" class="form-error" role="alert" hidden></p>
+        <button type="submit" class="btn btn-primary" id="auth-submit">Log in</button>
+      </form>
+    </main>
+
+    <!-- Signed in -->
+    <div id="app-view" hidden>
+      <header class="masthead">
+        <div class="topbar">
+          <span class="wordmark">S3 Uploads</span>
+          <button type="button" class="btn btn-quiet" id="logout">Log out</button>
+        </div>
+        <h1 class="display handle" id="username"></h1>
+        <div class="masthead-row">
+          <p id="user-meta" class="meta"></p>
+          <label class="btn btn-primary" for="file-input">Upload images</label>
+          <input id="file-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple hidden />
+        </div>
+      </header>
+
+      <main>
+        <section id="gallery" class="sheet" aria-label="Your images" aria-busy="true"></section>
+
+        <label id="empty" class="empty" for="file-input" hidden>
+          <strong>No images yet</strong>
+          <span>Drop images anywhere on this page, or click to choose files. JPEG, PNG, WebP or GIF, up to 10 MB each.</span>
+        </label>
+      </main>
+    </div>
+
+    <!-- Shown while dragging files over the window -->
+    <div id="drop-overlay" class="drop-overlay" hidden>
+      <p>Drop to upload</p>
+    </div>
+
+    <!-- Upload progress -->
+    <aside id="tray" class="tray" aria-label="Uploads" hidden>
+      <ul id="tray-list"></ul>
+    </aside>
+
+    <!-- Lightbox: <dialog> gives us focus trapping and Esc-to-close for free -->
+    <dialog id="lightbox" class="lightbox" aria-label="Image viewer">
+      <button type="button" class="lb-btn lb-close" data-action="close" aria-label="Close">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+      </button>
+      <button type="button" class="lb-btn lb-prev" data-action="prev" aria-label="Previous image">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+      </button>
+      <button type="button" class="lb-btn lb-next" data-action="next" aria-label="Next image">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+      </button>
+
+      <figure class="lb-stage">
+        <img id="lb-img" alt="" />
+      </figure>
+
+      <footer class="lb-bar">
+        <div class="lb-info">
+          <strong id="lb-name"></strong>
+          <span id="lb-details"></span>
+        </div>
+        <div class="lb-actions" id="lb-actions">
+          <span id="lb-count" class="lb-count"></span>
+          <a id="lb-open" class="btn btn-ghost" target="_blank" rel="noopener">Open original</a>
+          <button type="button" class="btn btn-ghost" data-action="ask-delete">Delete</button>
+        </div>
+        <div class="lb-actions" id="lb-confirm" hidden>
+          <span>Delete this image for good?</span>
+          <button type="button" class="btn btn-ghost" data-action="cancel-delete">Keep it</button>
+          <button type="button" class="btn btn-danger" data-action="delete">Delete</button>
+        </div>
+      </footer>
+    </dialog>
+
+    <div id="toasts" class="toasts" aria-live="polite"></div>
+  </body>
+</html>
