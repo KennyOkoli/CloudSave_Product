@@ -4,12 +4,17 @@ import { ensureBucket } from "./s3.js";
 import { initDb } from "./db.js";
 import { startPendingCleanup } from "./jobs/cleanup-pending.js";
 
-try {
-  await initDb();
-} catch (err) {
-  console.error(`Can't reach MySQL at ${config.db.host}:${config.db.port}.`);
-  console.error(err);
-  process.exit(1);
+
+const skipDbCheck = process.env.SKIP_DB_CHECK === "true";
+
+if (!skipDbCheck) {
+  try {
+    await initDb();
+  } catch (err) {
+    console.error(`Can't reach MySQL at ${config.db.host}:${config.db.port}.`);
+    console.error(err);
+    process.exit(1);
+  }
 }
 
 try {

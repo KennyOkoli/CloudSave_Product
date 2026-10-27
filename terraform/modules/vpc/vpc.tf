@@ -117,7 +117,7 @@ resource "aws_subnet" "CS_private_subnet"{
         name = var.private_subnets_tags[count.index]
     }
 }
-
+/*
 resource "aws_eip" "cs_eip" {
     count = 2
 }
@@ -139,7 +139,7 @@ resource "aws_route_table" "CS_private-route"{
         cidr_block = var.public_ip
         nat_gateway_id = aws_nat_gateway.cs_nat_gateway[count.index].id
     }
-}
+}*/
 
 resource "aws_network_acl" "CS_acl_private" {
     vpc_id = aws_vpc.CloudSave.id
@@ -161,7 +161,7 @@ resource "aws_network_acl" "CS_acl_private" {
         to_port = 65535
     }
 }
-
+/*
 resource "aws_route_table_association" "route_private_subnet" {
     count = 2
     route_table_id = aws_route_table.CS_private-route[count.index].id
@@ -172,4 +172,4 @@ resource "aws_network_acl_association" "nacls_private"{
     count = 2
     network_acl_id = aws_network_acl.CS_acl_private.id
     subnet_id = aws_subnet.CS_private_subnet[count.index].id
-}
+}*/
