@@ -20,6 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - env:
+          SKIP_DB_CHECK: false
+          SKIP_S3_CHECK: false
+          ENABLE_BACKGROUND_JOBS: true
       - run: docker build -t cloudsave .
       - run: docker run --name cloudsave-debug -p 4000:4000 -e SKIP_DB_CHECK=true -e SKIP_S3_CHECK=true -e ENABLE_BACKGROUND_JOBS=false cloudsave
       - run: |
