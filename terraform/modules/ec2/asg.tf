@@ -14,7 +14,7 @@ resource "aws_launch_template" "ec2-template" {
     user_data = filebase64("${path.module}/user_data.sh")
 }
 
-/*resource "aws_autoscaling_group" "ec2-autoscale" {
+resource "aws_autoscaling_group" "ec2-autoscale" {
     name = "ec2-autoscale"
     vpc_zone_identifier = var.vpc-prv-subnets
     desired_capacity = 2
@@ -31,14 +31,14 @@ resource "aws_launch_template" "ec2-template" {
       strategy = "Rolling"
 
       preferences {
-        min_healthy_percentage = 100
+        min_healthy_percentage = 50
         instance_warmup = 300
       }
 
     triggers = ["launch_template"]
   }
 }
-*/
+
 resource "aws_security_group" "ec2-compute-sg" {
     name = "ec2-task-sg"
     vpc_id = var.vpc_id

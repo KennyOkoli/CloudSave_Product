@@ -43,6 +43,10 @@ module "ecs" {
     public = module.vpc.public-cidr
     target-arn = module.ec2.target
     alb_sg = module.ec2.alb-sg
+    db_name = module.rds.db_name
+    db_username = module.rds.db_username
+    db_password = module.rds.db_password
+    s3_bucket = module.s3.bucket-name
 }
 
 module "ec2" {
