@@ -79,25 +79,17 @@ jobs:
       run: |
            url='${{env.REPO_URL}}/cloudsave-repo:${{github.sha}}'         
            echo "repo_url=$url" >> $GITHUB_OUTPUT
-    - name: print
-      run: echo ${{steps.repo.outputs.repo_url}}
 
     - name: build-tag-push
       run: |
            docker build -t "${{steps.repo.outputs.repo_url}}" .
            docker push "${{steps.repo.outputs.repo_url}}"
 
-    - name: get-task-def
-      id: task-def
-      run: |
-           aws ecs describe-task-definition --task-definition web-app --region af-south-1 --query "taskDefinition" --output json | jq -c . > cs_task_def.json
-           echo "task_def=cs_task_def.json" >> $GITHUB_OUTPUT
-
     - name: revise-task-def
       id: update-task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-          task-definition: ${{steps.task-def.outputs.task_def}}
+          task-definition-family: web-app
           container-name: cloudsave-app
           image: ${{steps.repo.outputs.repo_url}}
 
