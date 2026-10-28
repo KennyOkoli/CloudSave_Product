@@ -80,7 +80,7 @@ jobs:
 
     - name: build-tag-push
       run: |
-           docker build ${{steps.repo.outputs.repo_url}} .
+           docker build -t ${{steps.repo.outputs.repo_url}} .
            docker push ${{steps.repo.outputs.repo_url}}
     
     - name: get-task-def
