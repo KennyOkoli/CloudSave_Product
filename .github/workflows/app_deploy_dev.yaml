@@ -95,7 +95,8 @@ jobs:
            --region af-south-1 \
            --query taskDefinition \
            --output json | jq -c . > cs_task_def.json
-
+           
+           echo cs_task_def.json
            echo "task_def=cs_task_def.json" >> $GITHUB_OUTPUT
 
     - name: revise-task-def
