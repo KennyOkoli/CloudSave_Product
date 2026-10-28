@@ -90,7 +90,7 @@ jobs:
     - name: get-task-def
       id: task-def
       run: |
-           aws ecs descirbe-task-definition \
+           aws ecs describe-task-definition \
            --task-definition "web-app" \
            --query taskDefinition > cs_task_def.json
 
