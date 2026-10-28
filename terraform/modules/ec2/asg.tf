@@ -25,7 +25,7 @@ resource "aws_autoscaling_group" "ec2-autoscale" {
 
     launch_template {
       id = aws_launch_template.ec2-template.id
-      version = "$Latest"
+      version = aws_launch_template.ec2-template.latest_version # Read why
     }
     instance_refresh {
       strategy = "Rolling"
