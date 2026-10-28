@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "oidc_policy_doc" {
         condition {
             test = "StringLike"
             variable = "token.actions.githubusercontent.com:sub"
-            values = ["repo:KennyOkoli@334668853/CloudSave@1426990249:*"] # In future projects find out how to streamline this permission
+            values = ["repo:KennyOkoli@334668853/CloudSave_Product@1426990249:*"] # In future projects find out how to streamline this permission
         }       
     }
 }
