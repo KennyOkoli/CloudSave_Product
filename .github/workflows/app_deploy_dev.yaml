@@ -74,7 +74,7 @@ jobs:
     
     - name: get-ecr-repo
       env:
-         REGISTRY: '${{steps.login-ecr.outputs.registry}}/cloudsave-repo:${{github.sha}}''
+         REGISTRY: '${{steps.login-ecr.outputs.registry}}/cloudsave-repo:${{github.sha}}'
       run: echo REGISTRY
             
       
