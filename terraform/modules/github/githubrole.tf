@@ -67,3 +67,8 @@ data "aws_iam_policy_document" "github-policy-doc" {
       resources = ["*"] # Specify what role to pass
     }
 }
+
+resource "aws_iam_role_policy" "github-role-policy" {
+    role = aws_iam_role.github-role.id
+    policy = data.aws_iam_policy_document.github-policy-doc.json
+}
