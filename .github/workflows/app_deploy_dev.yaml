@@ -78,38 +78,39 @@ jobs:
          REPO_URL: ${{steps.login-ecr.outputs.registry}}
       run: |
            url='$REPO_URL/cloudsave-repo:${{github.sha}}'
-           echo "repo_url=$url" >> $GITHUB_OUTPUT
+           echo $url
+    #        echo "repo_url=$url" >> $GITHUB_OUTPUT
 
-    - name: build-tag-push
-      env:
-          IMAGE_URL: ${{steps.repo.outputs.repo_url}}
-      run: |
-           docker build -t "$IMAGE_URL" .
-           docker push "$IMAGE_URL"
+    # - name: build-tag-push
+    #   env:
+    #       IMAGE_URL: ${{steps.repo.outputs.repo_url}}
+    #   run: |
+    #        docker build -t "$IMAGE_URL" .
+    #        docker push "$IMAGE_URL"
 
-    - name: get-task-def
-      id: task-def
-      run: |
-           aws ecs descirbe-task-definition \
-           --task-definition cloudsave-task-def \
-           --query cloudsave-task-def > cs_task_def.json
+    # - name: get-task-def
+    #   id: task-def
+    #   run: |
+    #        aws ecs descirbe-task-definition \
+    #        --task-definition cloudsave-task-def \
+    #        --query cloudsave-task-def > cs_task_def.json
 
-           echo "task_def=cs_task_def.json" >> $GITHUB_OUTPUT
+    #        echo "task_def=cs_task_def.json" >> $GITHUB_OUTPUT
 
-    - name: revise-task-def
-      id: update-task-def
-      env:
-          IMAGE_URL: ${{steps.repo.outputs.repo_url}}
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-          task-definition: ${{steps.task-def.output.task_def}}
-          container-name: cloudsave-app
-          image: $IMAGE_URL
+    # - name: revise-task-def
+    #   id: update-task-def
+    #   env:
+    #       IMAGE_URL: ${{steps.repo.outputs.repo_url}}
+    #   uses: aws-actions/amazon-ecs-render-task-definition@v1
+    #   with:
+    #       task-definition: ${{steps.task-def.output.task_def}}
+    #       container-name: cloudsave-app
+    #       image: $IMAGE_URL
 
-    - name: update-ecs
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v2
-      with:
-           task-definition: ${{steps.update-task-def.outputs.task-definition}}
-           service: cloudsave-ecs
-           cluster: cloudsave-cluster
+    # - name: update-ecs
+    #   uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+    #   with:
+    #        task-definition: ${{steps.update-task-def.outputs.task-definition}}
+    #        service: cloudsave-ecs
+    #        cluster: cloudsave-cluster
       
