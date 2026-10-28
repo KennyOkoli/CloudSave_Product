@@ -39,11 +39,11 @@ const server = createApp().listen(config.port, () =>
 console.log(`Server running on http://localhost:${config.port}`),
 );
 
-
-
-for (const signal of ["SIGINT", "SIGTERM"] as const) {
-  process.on(signal, () => {
-    clearInterval(cleanup);
-    server.close(() => process.exit(0));
-  });
+if (process.env.ENABLE_BACKGROUND_JOBS === "true") {
+  for (const signal of ["SIGINT", "SIGTERM"] as const) {
+    process.on(signal, () => {
+      clearInterval(cleanup);
+      server.close(() => process.exit(0));
+    });
+  }
 }
