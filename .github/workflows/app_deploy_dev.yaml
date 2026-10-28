@@ -25,7 +25,7 @@ jobs:
 
       - name: build-test
         run: |
-             docker run -d -p 3000:4000 -e SKIP_DB_CHECK=true -e JWT_SECRET=abcdefghijklmnopqrstuvwxyhiyvjgyukvfgyjm -e SKIP_S3_CHECK=true -e ENABLE_BACKGROUND_JOBS=false cloudsave
+             docker run -d --name cloud-debug -p 3000:4000 -e SKIP_DB_CHECK=true -e JWT_SECRET=abcdefghijklmnopqrstuvwxyhiyvjgyukvfgyjm -e SKIP_S3_CHECK=true -e ENABLE_BACKGROUND_JOBS=false cloudsave
              sleep 3
              docker ps -a
              docker logs cloud-debug
