@@ -90,9 +90,7 @@ jobs:
     - name: get-task-def
       id: task-def
       run: |
-           aws ecs describe-task-definition --task-definition web-app --region af-south-1 --query taskDefinition --output json > cs_task_def.json
-           
-           echo cs_task_def.json
+           aws ecs describe-task-definition --task-definition web-app --region af-south-1 --query "taskDefinition" --output json > cs_task_def.json           echo cs_task_def.json
            echo "task_def=cs_task_def.json" >> $GITHUB_OUTPUT
 
     - name: revise-task-def
