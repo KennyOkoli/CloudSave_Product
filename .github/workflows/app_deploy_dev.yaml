@@ -52,3 +52,18 @@ jobs:
         run: |
               sleep 6
               curl --fail http://localhost:3000
+  push_to_ecr:
+    runs-on: ubuntu-latest
+    needs: build_test
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: login_ecr
+      id: login
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+         role-to-assume: arn:aws:iam::871145212791:role/github-role
+         aws-region: af-south-1
+    
+    - name: test_credentials
+      run: aws sts get-caller-identity
