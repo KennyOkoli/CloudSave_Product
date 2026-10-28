@@ -94,7 +94,7 @@ jobs:
            --task-definition "web-app" \
            --query taskDefinition \
            --output json 
-           jq -c .> cs_task_def.json
+           jq -c . > cs_task_def.json
 
            echo "task_def=cs_task_def.json" >> $GITHUB_OUTPUT
 
