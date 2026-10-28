@@ -92,7 +92,7 @@ jobs:
       run: |
            aws ecs descirbe-task-definition \
            --task-definition "web-app" \
-           --query "web-app" > cs_task_def.json
+           --query taskDefinition > cs_task_def.json
 
            echo "task_def=cs_task_def.json" >> $GITHUB_OUTPUT
 
