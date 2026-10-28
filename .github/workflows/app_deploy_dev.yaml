@@ -59,13 +59,23 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: login_ecr
-      id: login
+    - name: get identity
       uses: aws-actions/configure-aws-credentials@v4
       with:
          role-to-assume: arn:aws:iam::871145212791:role/github-role
          aws-region: af-south-1
     
-    
     - name: test_credentials
       run: aws sts get-caller-identity
+
+    - name: login_ecr_service
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+    
+    - name: get-ecr-repo
+      env:
+         REGISTRY: '${{steps.login-ecr.outputs.registry}}/cloudsave-repo:${{github.sha}}''
+      run: echo REGISTRY
+            
+      
+        
