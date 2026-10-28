@@ -24,32 +24,24 @@ jobs:
         run: docker build -t cloudsave .
 
       - name: build-test
+        env:
+          JWT_SECRET: change-me-to-a-long-random-string
+          DB_HOST: cloudsave.czqsco2eaxj9.af-south-1.rds.amazonaws.com
+          DB_PORT: 3306
+          DB_NAME: CloudSave_db
+          DB_USERNAME: Kenny
+          DB_PASSWORD: kenny2007
+          S3_BUCKET: cloudsave-bucket-871145212791
+          ENABLE_BACKGROUND_JOBS: true
+          SKIP_DB_CHECK: false
+          SKIP_S3_CHECK: false
         run: |
              docker run -d --name cloud-debug -p 3000:4000 -e SKIP_DB_CHECK=true -e JWT_SECRET=abcdefghijklmnopqrstuvwxyhiyvjgyukvfgyjm -e SKIP_S3_CHECK=true -e ENABLE_BACKGROUND_JOBS=false cloudsave
              sleep 3
              docker ps -a
              docker logs cloud-debug
 
-      - name: Test server
+      - name:  test
         run: |
-          for i in $(seq 1 15); do
-            if curl -sS http://localhost:3000/ -o /dev/null; then
-              echo "Server is reachable"
-              exit 0
-            fi
-
-            if [ "$(docker inspect -f '{{.State.Running}}' cloud-debug)" != "true" ]; then
-              echo "Container exited"
-              docker logs cloud-debug
-              exit 1
-            fi
-
-            sleep 2
-          done
-
-          echo "Server did not respond"
-          docker logs cloud-debug
-          exit 1
-      - run: |
               sleep 6
               curl --fail http://localhost:3000
