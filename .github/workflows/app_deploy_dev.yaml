@@ -66,5 +66,6 @@ jobs:
          role-to-assume: arn:aws:iam::871145212791:role/github-role
          aws-region: af-south-1
     
+    
     - name: test_credentials
       run: aws sts get-caller-identity
