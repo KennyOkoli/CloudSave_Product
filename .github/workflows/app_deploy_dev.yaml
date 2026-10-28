@@ -30,15 +30,14 @@ jobs:
           AWS_REGION: af-south-1
           S3_BUCKET: cloudsave-bucket-871145212791
           APP_ORIGIN: http://localhost:4000
-          AWS_PROFILE=JeffRole
-          ENABLE_BACKGROUND_JOBS=true
+          AWS_PROFILE: JeffRole
+          ENABLE_BACKGROUND_JOBS: true
           SKIP_DB_CHECK: false
           SKIP_S3_CHECK: false
           ENABLE_BACKGROUND_JOBS: true
           JWT_SECRET: abcdefghijklmnopqrstuvwxyhiyvjgyukvfgyjm
       - run: docker build -t cloudsave .
       - run: docker run -d --name cloud-debug -p 3000:4000 -e SKIP_DB_CHECK=true -e SKIP_S3_CHECK=true -e ENABLE_BACKGROUND_JOBS=false cloudsave
-
       - run: |
               sleep 6
               curl --fail http://localhost:3000
