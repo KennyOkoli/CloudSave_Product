@@ -77,9 +77,10 @@ jobs:
       env:
          REPO_URL: ${{steps.login-ecr.outputs.registry}}
       run: |
-           url='$REPO_URL/cloudsave-repo:${{github.sha}}'
-           echo $url
-    #        echo "repo_url=$url" >> $GITHUB_OUTPUT
+           url='$REPO_URL/cloudsave-repo:${{github.sha}}'         
+           echo "repo_url=$url" >> $GITHUB_OUTPUT
+    - name: print
+      run: echo ${{steps.repo.outputs.repo_url}}
 
     # - name: build-tag-push
     #   env:
