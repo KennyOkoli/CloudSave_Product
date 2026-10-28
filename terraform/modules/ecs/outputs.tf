@@ -1,3 +1,3 @@
-# output "ecs-sg" {
-#     value = aws_security_group.task-sg.id
-# }
+output "ecs-sg" {
+    value = aws_security_group.task-sg.id
+}
