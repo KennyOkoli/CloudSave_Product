@@ -81,10 +81,12 @@ jobs:
            echo "repo_url=$url" >> $GITHUB_OUTPUT
 
     - name: build-tag-push
+      env:
+          IMAGE_URL: ${{steps.repo.outputs.repo_url}}
       run: |
-           docker build -t ${{steps.repo.outputs.repo_url}} .
-           docker push ${{steps.repo.outputs.repo_url}}
-    
+           docker build -t "$IMAGE_URL" .
+           docker push "$IMAGE_URL"
+
     - name: get-task-def
       id: task-def
       run: |
@@ -96,11 +98,13 @@ jobs:
 
     - name: revise-task-def
       id: update-task-def
+      env:
+          IMAGE_URL: ${{steps.repo.outputs.repo_url}}
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
           task-definition: ${{steps.task-def.output.task_def}}
           container-name: cloudsave-app
-          image: ${{steps.repo.outputs.repo_url}}
+          image: $IMAGE_URL
 
     - name: update-ecs
       uses: aws-actions/amazon-ecs-deploy-task-definition@v2
