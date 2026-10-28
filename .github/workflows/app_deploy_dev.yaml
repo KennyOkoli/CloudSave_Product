@@ -82,36 +82,32 @@ jobs:
     - name: print
       run: echo ${{steps.repo.outputs.repo_url}}
 
-    # - name: build-tag-push
-    #   env:
-    #       IMAGE_URL: ${{steps.repo.outputs.repo_url}}
-    #   run: |
-    #        docker build -t "$IMAGE_URL" .
-    #        docker push "$IMAGE_URL"
+    - name: build-tag-push
+      run: |
+           docker build -t "${{steps.repo.outputs.repo_url}}" .
+           docker push "$${{steps.repo.outputs.repo_url}}"
 
-    # - name: get-task-def
-    #   id: task-def
-    #   run: |
-    #        aws ecs descirbe-task-definition \
-    #        --task-definition cloudsave-task-def \
-    #        --query cloudsave-task-def > cs_task_def.json
+    - name: get-task-def
+      id: task-def
+      run: |
+           aws ecs descirbe-task-definition \
+           --task-definition cloudsave-task-def \
+           --query cloudsave-task-def > cs_task_def.json
 
-    #        echo "task_def=cs_task_def.json" >> $GITHUB_OUTPUT
+           echo "task_def=cs_task_def.json" >> $GITHUB_OUTPUT
 
-    # - name: revise-task-def
-    #   id: update-task-def
-    #   env:
-    #       IMAGE_URL: ${{steps.repo.outputs.repo_url}}
-    #   uses: aws-actions/amazon-ecs-render-task-definition@v1
-    #   with:
-    #       task-definition: ${{steps.task-def.output.task_def}}
-    #       container-name: cloudsave-app
-    #       image: $IMAGE_URL
+    - name: revise-task-def
+      id: update-task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+          task-definition: ${{steps.task-def.output.task_def}}
+          container-name: cloudsave-app
+          image: ${{steps.repo.outputs.repo_url}}
 
-    # - name: update-ecs
-    #   uses: aws-actions/amazon-ecs-deploy-task-definition@v2
-    #   with:
-    #        task-definition: ${{steps.update-task-def.outputs.task-definition}}
-    #        service: cloudsave-ecs
-    #        cluster: cloudsave-cluster
+    - name: update-ecs
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+      with:
+           task-definition: ${{steps.update-task-def.outputs.task-definition}}
+           service: cloudsave-ecs
+           cluster: cloudsave-cluster
       
