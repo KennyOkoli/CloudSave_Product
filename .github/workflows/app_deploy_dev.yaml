@@ -93,7 +93,7 @@ jobs:
            echo cs_task_def.json >> $GITHUB_OUTPUT
 
     - name: revise-task-def
-      id: task-def
+      id: update-task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
           task-definition: ${{steps.task-def.output.cs_task_def.json}}
@@ -103,7 +103,7 @@ jobs:
     - name: update-ecs
       uses: aws-actions/amazon-ecs-deploy-task-definition@v2
       with:
-           task-definition: ${{steps.task-def.outputs.task-definition}}
+           task-definition: ${{steps.update-task-def.outputs.task-definition}}
            service: cloudsave-ecs
            cluster: cloudsave-cluster
       
