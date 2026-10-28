@@ -91,8 +91,8 @@ jobs:
       id: task-def
       run: |
            aws ecs descirbe-task-definition \
-           --task-definition cloudsave-task-def \
-           --query cloudsave-task-def > cs_task_def.json
+           --task-definition "web-app" \
+           --query "cloudsave-task-def" > cs_task_def.json
 
            echo "task_def=cs_task_def.json" >> $GITHUB_OUTPUT
 
@@ -100,7 +100,7 @@ jobs:
       id: update-task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-          task-definition: ${{steps.task-def.output.task_def}}
+          task-definition: ${{steps.task-def.outputs.task_def}}
           container-name: cloudsave-app
           image: ${{steps.repo.outputs.repo_url}}
 
