@@ -92,6 +92,7 @@ jobs:
       run: |
            aws ecs describe-task-definition \
            --task-definition "web-app" \
+           --region af-south-1
            --query taskDefinition \
            --output json | jq -c . > cs_task_def.json
 
