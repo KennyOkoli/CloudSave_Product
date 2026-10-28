@@ -6,7 +6,7 @@ variable "vpc_id" {}
 
 resource "aws_launch_template" "ec2-template" {
     image_id = "ami-0016bff49059ce56b"
-    instance_type = "t3.micro"
+    instance_type = "t3.small"
     vpc_security_group_ids = [aws_security_group.ec2-compute-sg.id]
     iam_instance_profile {
       arn = aws_iam_instance_profile.ec2-profile.arn 
