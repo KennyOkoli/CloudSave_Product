@@ -27,6 +27,6 @@ jobs:
       - run: docker build -t cloudsave .
       - run: |
               sleep 11
-              docker run -d --name cloud-debug -p 4000:4000 -e SKIP_DB_CHECK=true -e SKIP_S3_CHECK=true -e ENABLE_BACKGROUND_JOBS=false cloudsave
+              docker run -d --name cloud-debug -p 3000:4000 -e SKIP_DB_CHECK=true -e SKIP_S3_CHECK=true -e ENABLE_BACKGROUND_JOBS=false cloudsave
               sleep 6
-              curl --fail http://localhost:4000
+              curl --fail http://localhost:3000
