@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "github-policy-doc" {
     statement {
       effect = "Allow"
       actions = [
-        "ecr:GetAuthorisationToken"
+        "ecr:GetAuthorizationToken"
       ]
       resources = ["*"] # Similar to ecr login
     }
@@ -59,7 +59,7 @@ data "aws_iam_policy_document" "github-policy-doc" {
         "ecs:UpdateService",
         "ecs:DescribeServices"     
       ]
-      resources = ["*"] # One arn for ecs while the other for ecs task def
+      resources = [var.ecr_arn] # One arn for ecs while the other for ecs task def
     }
     statement {
       effect = "Allow"
@@ -67,6 +67,8 @@ data "aws_iam_policy_document" "github-policy-doc" {
       resources = ["*"] # Specify what role to pass
     }
 }
+#variable "pass-roles" {}
+variable "ecr_arn" {}
 
 resource "aws_iam_role_policy" "github-role-policy" {
     role = aws_iam_role.github-role.id

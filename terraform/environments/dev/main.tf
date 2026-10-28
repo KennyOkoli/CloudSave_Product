@@ -30,6 +30,7 @@ module "IdentityCenter" {
 
 module "github" {
     source = "../../modules/github"
+    ecr_arn = module.ecs.ecr-arn
 }
 
 module "ecs" {
