@@ -49,7 +49,7 @@ data "aws_iam_policy_document" "github-policy-doc" {
         "ecr:PutImage",
         "ecr:UploadLayerPart"
       ]
-      resources = ["*"]
+      resources = [var.ecr_arn]
     }
     statement {
       effect = "Allow"
@@ -59,7 +59,7 @@ data "aws_iam_policy_document" "github-policy-doc" {
         "ecs:UpdateService",
         "ecs:DescribeServices"     
       ]
-      resources = [var.ecr_arn] # One arn for ecs while the other for ecs task def
+      resources = ["*"] # One arn for ecs while the other for ecs task def
     }
     statement {
       effect = "Allow"
