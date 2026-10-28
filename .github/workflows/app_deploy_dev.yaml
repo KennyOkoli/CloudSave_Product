@@ -36,7 +36,7 @@ jobs:
           SKIP_S3_CHECK: false
           JWT_SECRET: abcdefghijklmnopqrstuvwxyhiyvjgyukvfgyjm
       - run: docker build -t cloudsave .
-      - run: docker run -d --name cloud-debug -p 3000:4000 -e SKIP_DB_CHECK=true -e SKIP_S3_CHECK=true -e ENABLE_BACKGROUND_JOBS=false cloudsave
+      - run: docker run -d --name cloud-debug -p 3000:4000 -e SKIP_DB_CHECK=true -e SKIP_S3_CHECK=true -e ENABLE_BACKGROUND_JOBS=true cloudsave
       - run: |
               sleep 6
               curl --fail http://localhost:3000
