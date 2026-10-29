@@ -23,6 +23,7 @@ data "aws_iam_policy_document" "task-actions" {
        ]
        resources = [
           var.s3,
+          "${var.s3}/*",
           var.secrets,
           aws_cloudwatch_log_group.cloudsave_logs.arn
        ]
