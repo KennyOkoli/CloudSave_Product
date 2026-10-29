@@ -115,6 +115,10 @@ AWS_REGION
 
 
 
+
+
+
+
 name: Build image, push to ecr and update ecs
 on:
   push:
