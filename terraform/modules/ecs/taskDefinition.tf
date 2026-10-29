@@ -68,6 +68,10 @@ resource "aws_ecs_task_definition" "cloudsave-task-def" {
             {
                 name = "AWS_REGION"
                 value = "af-south-1"
+            },
+            {
+                name = "APP_ORIGIN"
+                value = "http://localhost:4000"
             }
         ]
             logConfiguration = {
