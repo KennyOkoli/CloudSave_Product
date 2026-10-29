@@ -11,7 +11,7 @@ resource "aws_alb_target_group" "cloudsave-target-group" {
     health_check {
     protocol = "HTTP"
     port = 4000
-    path = "/" # look up on this
+    path = "/cs" # look up on this
     interval = 10
     timeout = 5
     healthy_threshold = 3
