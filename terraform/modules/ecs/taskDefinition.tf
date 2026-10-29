@@ -20,8 +20,8 @@ resource "aws_ecs_task_definition" "cloudsave-task-def" {
         {
         name = "cloudsave-app"
         image = "nginx:latest"
-        cpu = 525 # Lookup
-        memory = 1024
+        cpu = 256 # Lookup
+        memory = 512
         portMappings = [{
             containerPort = 4000
         }]
