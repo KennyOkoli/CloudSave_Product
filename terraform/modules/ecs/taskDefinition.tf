@@ -55,17 +55,17 @@ resource "aws_ecs_task_definition" "cloudsave-task-def" {
             },
             {
                 name = "ENABLE_BACKGROUND_JOBS"
-                value = true
+                value = "true"
             },
             {
                 name = "SKIP_DB_CHECK"
-                value = false
+                value = "false"
             },
             {
                 name = "SKIP_S3_CHECK"
-                value = false
+                value = "false"
             }
-            ]
+        ]
             logConfiguration = {
             logDriver = "awslogs"
             options = {
