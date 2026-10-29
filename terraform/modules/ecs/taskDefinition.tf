@@ -64,6 +64,10 @@ resource "aws_ecs_task_definition" "cloudsave-task-def" {
             {
                 name = "SKIP_S3_CHECK"
                 value = "false"
+            },
+            {
+                name = "AWS_REGION"
+                value = "af-south-1"
             }
         ]
             logConfiguration = {
