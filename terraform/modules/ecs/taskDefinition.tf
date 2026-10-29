@@ -54,7 +54,15 @@ resource "aws_ecs_task_definition" "cloudsave-task-def" {
                 value = "abcdefghijklmnopqrstuvwxyhiyvjgyukvfgyjm"
             }
             ]
+            logConfiguration = {
+            logDriver = "awslogs"
+            options = {
+                awslogs-group = aws_cloudwatch_log_group.cloudsave_logs.name
+                awslogs-region = var.region
+                awslogs-stream-prefix = "ecs"
+            }
+        }
         }
     ])
 }
-
+variable "region" {}

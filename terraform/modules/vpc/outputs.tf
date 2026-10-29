@@ -21,4 +21,5 @@ output "vpc-nacls" {
 output "vpc-public-subnet" {
     value = aws_subnet.CS_public_subnet[*].id
 }
+
 # For a commit

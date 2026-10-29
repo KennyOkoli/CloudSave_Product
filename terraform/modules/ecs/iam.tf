@@ -17,11 +17,14 @@ data "aws_iam_policy_document" "task-actions" {
           "s3:PutObject",
           "s3:ListBucket",
           "s3:DeleteObject",
-          "secretsmanager:GetSecretValue"
+          "secretsmanager:GetSecretValue",
+          "logs:CreateLogStream",
+          "logs:PullLogEvents"
        ]
        resources = [
           var.s3,
-          var.secrets
+          var.secrets,
+          aws_cloudwatch_log_group.cloudsave_logs.arn
        ]
     }
 }
