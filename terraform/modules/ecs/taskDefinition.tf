@@ -48,6 +48,10 @@ resource "aws_ecs_task_definition" "cloudsave-task-def" {
             },
             {   name = "S3_BUCKET"
                 value = var.s3_bucket
+            },
+            {
+                name = "JWT_SECRET"
+                value = "abcdefghijklmnopqrstuvwxyhiyvjgyukvfgyjm"
             }
             ]
         }
