@@ -38,7 +38,7 @@ locals{
 
 
 resource "aws_db_instance" "CloudSave_db"{
-    db_name = "CloudSave_db-${local.prefix}"
+    db_name = "CloudSave_db_${local.prefix}"
     identifier = "cloudsave-${local.prefix}"
     engine = "mysql"
     engine_version = "8.4.11"
@@ -207,6 +207,6 @@ resource "aws_iam_role_policy_attachment" "ec2_role_policy" {
 }
 
 resource "aws_iam_instance_profile" "ec2_instance_profile" {
-    name = "ec2_instance_profile"
+    name = "ec2_instance_profile_${local.prefix}"
     role = aws_iam_role.ec2_role.name   
 }

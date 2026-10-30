@@ -48,7 +48,7 @@ resource "aws_iam_role" "task-def-role" {
 }
 
 resource "aws_iam_role_policy" "task-def-policy" {
-    name = "task-def-policy"
+    name = "task-def-policy-${local.prefix}"
     role = aws_iam_role.task-def-role.id
     policy = data.aws_iam_policy_document.role-policy.json
 }

@@ -25,6 +25,6 @@ resource "aws_iam_role_policy_attachment" "ec2-role-policy-ssm" {
 }
 
 resource "aws_iam_instance_profile" "ec2-profile" {
-    name = "ec2-profile"
+    name = "ec2-profile-${local.prefix}"
     role = aws_iam_role.ec2-role.name
 }
