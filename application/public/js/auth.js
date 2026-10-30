@@ -3,7 +3,7 @@ import { $ } from "./ui.js";
 
 let mode = "login";
 
-function setMode(next) {
+export function setMode(next) {
   mode = next;
   const registering = mode === "register";
   $("#auth-title").textContent = registering ? "Create your account" : "Welcome back";

@@ -1,6 +1,6 @@
 import { api } from "./api.js";
 import { $, formatBytes, formatDate, plural, toast } from "./ui.js";
-import { initAuth } from "./auth.js";
+import { initAuth, setMode } from "./auth.js";
 import { clearImages, loadImages, onImagesChange, onOpenImage, setQuery, setSort, setView } from "./gallery.js";
 import { clearTray, enableDropUploads, uploadFiles } from "./uploads.js";
 import { openLightbox } from "./lightbox.js";
@@ -51,22 +51,40 @@ async function showApp() {
   $("#menu-avatar").textContent = initial;
   document.title = "My images · CloudSave";
 
-  $("#auth-view").hidden = true;
-  $("#app-view").hidden = false;
+  showView("app");
   await loadImages();
 }
 
-function showAuth() {
+// One of landing, auth or app shows at a time; swaps crossfade where the browser supports it.
+function showView(name) {
+  const swap = () => {
+    for (const view of ["landing", "auth", "app"]) $(`#${view}-view`).hidden = view !== name;
+    window.scrollTo(0, 0);
+  };
+  if (!document.startViewTransition) return Promise.resolve(swap());
+  return document.startViewTransition(swap).updateCallbackDone;
+}
+
+function showLanding() {
   me = null;
   clearImages();
   clearTray();
   document.title = "CloudSave";
-  $("#app-view").hidden = true;
-  $("#auth-view").hidden = false;
-  $("#auth-form").username.focus();
+  showView("landing");
 }
 
-initAuth({ onSignedIn: showApp, onSignedOut: showAuth });
+function showAuth(mode) {
+  setMode(mode);
+  showView("auth").then(() => $("#auth-form").username.focus());
+}
+
+document.addEventListener("click", (e) => {
+  const go = e.target.closest("[data-go]")?.dataset.go;
+  if (go === "landing") showView("landing");
+  else if (go) showAuth(go);
+});
+
+initAuth({ onSignedIn: showApp, onSignedOut: showLanding });
 initSelection();
 onOpenImage(openLightbox);
 
@@ -99,6 +117,6 @@ $("#file-input").addEventListener("change", (e) => {
 enableDropUploads(() => Boolean(me));
 
 showApp().catch((err) => {
-  showAuth();
+  showLanding();
   if (err.status !== 401) toast(err.message, { error: true });
 });

@@ -28,7 +28,88 @@
       <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></symbol>
       <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6m4-6v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3" /></symbol>
       <symbol id="i-logout" viewBox="0 0 24 24"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 16l-4-4 4-4M6 12h10" /></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5" /><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3" /></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5" /></symbol>
     </svg>
+
+    <!-- Landing (signed out) -->
+    <div id="landing-view" class="landing" hidden>
+      <nav class="landing-nav">
+        <div class="brand">
+          <svg class="logo" aria-hidden="true"><use href="#i-logo" /></svg>
+          <span>CloudSave</span>
+        </div>
+        <button type="button" class="btn btn-quiet" data-go="login">Log in</button>
+      </nav>
+
+      <main>
+        <section class="hero">
+          <p class="pill reveal" style="--d: 0">Image storage on AWS</p>
+          <h1 class="reveal" style="--d: 1">Your photos, <span class="accent-text">safe in the cloud.</span></h1>
+          <p class="hero-lede reveal" style="--d: 2">
+            CloudSave keeps your images in your own private corner of the cloud. Drop in a batch, watch it upload, and come
+            back to it from any device.
+          </p>
+          <div class="hero-ctas reveal" style="--d: 3">
+            <button type="button" class="btn btn-primary btn-lg" data-go="register">
+              Get started
+              <svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg>
+            </button>
+            <button type="button" class="btn btn-outline btn-lg" data-go="login">Log in</button>
+          </div>
+
+          <!-- A small, decorative version of the app -->
+          <div class="preview reveal" style="--d: 5" aria-hidden="true">
+            <div class="preview-bar"><span></span><span></span><span></span></div>
+            <div class="preview-body">
+              <div class="preview-head">
+                <strong>My images</strong>
+                <span>6 images · 14.2 MB</span>
+              </div>
+              <div class="preview-grid">
+                <img src="https://images.unsplash.com/photo-1758272133904-413d8755e728?w=400&q=75&auto=format&fit=crop" alt="" />
+                <img src="https://images.unsplash.com/photo-1651546904620-9a9bc628a1e4?w=400&q=75&auto=format&fit=crop" alt="" />
+                <img src="https://images.unsplash.com/photo-1719831936169-faee5b519162?w=400&q=75&auto=format&fit=crop" alt="" />
+                <img src="https://images.unsplash.com/photo-1758275557315-53f66f57119a?w=400&q=75&auto=format&fit=crop" alt="" />
+                <img src="https://images.unsplash.com/photo-1661484575641-2253af5e5c2b?w=400&q=75&auto=format&fit=crop" alt="" />
+                <img src="https://images.unsplash.com/photo-1514582086679-4024becf927e?w=400&q=75&auto=format&fit=crop" alt="" />
+              </div>
+            </div>
+            <div class="preview-chip preview-upload">
+              <svg class="icon" aria-hidden="true"><use href="#i-upload" /></svg>
+              <div>
+                <strong>beach-day.jpg</strong>
+                <span class="preview-progress"><span></span></span>
+              </div>
+            </div>
+            <div class="preview-chip preview-saved">
+              <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+              Saved to the cloud
+            </div>
+          </div>
+        </section>
+
+        <section class="features" aria-label="Features">
+          <div class="feature reveal" style="--d: 6">
+            <span class="feature-icon"><svg class="icon" aria-hidden="true"><use href="#i-lock" /></svg></span>
+            <h2>Private by default</h2>
+            <p>Only you can see your images. Every link to them expires after 15 minutes.</p>
+          </div>
+          <div class="feature reveal" style="--d: 7">
+            <span class="feature-icon"><svg class="icon" aria-hidden="true"><use href="#i-upload" /></svg></span>
+            <h2>Straight to storage</h2>
+            <p>Files go directly from your browser to Amazon S3, with live progress for each one.</p>
+          </div>
+          <div class="feature reveal" style="--d: 8">
+            <span class="feature-icon"><svg class="icon" aria-hidden="true"><use href="#i-grid" /></svg></span>
+            <h2>Easy to browse</h2>
+            <p>Search, sort, switch between grid and list, and delete several images at once.</p>
+          </div>
+        </section>
+      </main>
+
+      <footer class="landing-footer">Built with Express, MySQL and Amazon S3</footer>
+    </div>
 
     <!-- Signed out -->
     <main id="auth-view" class="auth" hidden>
@@ -71,10 +152,10 @@
         <figcaption><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg> Saved</figcaption>
       </figure>
 
-      <div class="auth-brand">
+      <button type="button" class="auth-brand" data-go="landing" aria-label="CloudSave home">
         <svg class="logo" aria-hidden="true"><use href="#i-logo" /></svg>
         <span>CloudSave</span>
-      </div>
+      </button>
 
       <div class="auth-card">
         <h1 id="auth-title">Welcome back</h1>
