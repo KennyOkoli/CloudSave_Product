@@ -3,74 +3,242 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>S3 Uploads</title>
+    <title>CloudSave</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
-    />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" />
     <link rel="stylesheet" href="/styles.css" />
     <script type="module" src="/js/main.js"></script>
   </head>
   <body>
+    <!-- Reused logo and icons -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="i-logo" viewBox="0 0 32 32">
+        <rect width="32" height="32" rx="9" fill="var(--accent)" />
+        <path d="M10.5 22a4.5 4.5 0 0 1-.6-8.96 6 6 0 0 1 11.5-1.4A4.75 4.75 0 0 1 21.25 22Z" fill="#fff" />
+        <path d="M16 20v-5.5m-2.25 2.25L16 14.5l2.25 2.25" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+      </symbol>
+      <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m-5 5 5-5 5 5M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" /></symbol>
+      <symbol id="i-images" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3" /><circle cx="9" cy="10" r="1.75" /><path d="m21 16-4.5-4.5L7 20" /></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" /><path d="m20 20-4.4-4.4" /></symbol>
+      <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5" /><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5" /><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5" /><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5" /></symbol>
+      <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01" /></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" /></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" /></symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6m4-6v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3" /></symbol>
+      <symbol id="i-logout" viewBox="0 0 24 24"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 16l-4-4 4-4M6 12h10" /></symbol>
+    </svg>
+
     <!-- Signed out -->
     <main id="auth-view" class="auth" hidden>
-      <h1 class="display">S3 Uploads</h1>
-      <p class="lede">Your images, stored in your own corner of the bucket.</p>
+      <svg class="auth-pattern auth-pattern-tr" viewBox="0 0 480 480" aria-hidden="true">
+        <circle cx="480" cy="0" r="120" fill="var(--accent-wash)" />
+        <g fill="none" stroke="var(--accent)" stroke-opacity="0.22">
+          <circle cx="480" cy="0" r="180" />
+          <circle cx="480" cy="0" r="250" />
+          <circle cx="480" cy="0" r="330" stroke-dasharray="4 8" />
+          <circle cx="480" cy="0" r="420" />
+        </g>
+        <circle cx="300" cy="140" r="7" fill="var(--accent)" fill-opacity="0.35" />
+      </svg>
+      <svg class="auth-pattern auth-pattern-bl" viewBox="0 0 420 420" aria-hidden="true">
+        <defs>
+          <pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse">
+            <circle cx="3" cy="3" r="1.7" fill="var(--accent)" fill-opacity="0.4" />
+          </pattern>
+          <radialGradient id="dots-fade" cx="0" cy="1" r="1">
+            <stop offset="0.2" stop-color="#fff" />
+            <stop offset="0.85" stop-color="#fff" stop-opacity="0" />
+          </radialGradient>
+          <mask id="dots-mask"><rect width="420" height="420" fill="url(#dots-fade)" /></mask>
+        </defs>
+        <rect width="420" height="420" fill="url(#dots)" mask="url(#dots-mask)" />
+        <g fill="none" stroke="var(--accent)" stroke-opacity="0.24">
+          <circle cx="0" cy="420" r="160" />
+          <circle cx="0" cy="420" r="230" stroke-dasharray="4 8" />
+        </g>
+      </svg>
 
-      <div class="switch" role="tablist" aria-label="Account">
-        <button type="button" role="tab" data-mode="login" aria-selected="true">Log in</button>
-        <button type="button" role="tab" data-mode="register" aria-selected="false">Create account</button>
+      <div class="auth-stage">
+      <!-- Unsplash photos (free license), purely decorative -->
+      <figure class="auth-photo auth-photo-left" aria-hidden="true">
+        <img src="https://images.unsplash.com/photo-1758272133904-413d8755e728?w=480&q=80&auto=format&fit=crop" alt="" />
+        <figcaption><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg> Saved</figcaption>
+      </figure>
+      <figure class="auth-photo auth-photo-right" aria-hidden="true">
+        <img src="https://images.unsplash.com/photo-1651546904620-9a9bc628a1e4?w=480&q=80&auto=format&fit=crop" alt="" />
+        <figcaption><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg> Saved</figcaption>
+      </figure>
+
+      <div class="auth-brand">
+        <svg class="logo" aria-hidden="true"><use href="#i-logo" /></svg>
+        <span>CloudSave</span>
       </div>
 
-      <form id="auth-form" novalidate>
-        <label>
-          <span>Username</span>
-          <input name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required />
-        </label>
-        <label>
-          <span>Password</span>
-          <input name="password" type="password" autocomplete="current-password" required />
-          <small id="password-hint" hidden>At least 8 characters</small>
-        </label>
-        <p id="auth-error" class="form-error" role="alert" hidden></p>
-        <button type="submit" class="btn btn-primary" id="auth-submit">Log in</button>
-      </form>
+      <div class="auth-card">
+        <h1 id="auth-title">Welcome back</h1>
+        <p id="auth-lede" class="lede">Log in to your CloudSave account</p>
+
+        <form id="auth-form" novalidate>
+          <label class="field">
+            <span>Username</span>
+            <input name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required />
+          </label>
+          <label class="field">
+            <span>Password</span>
+            <input name="password" type="password" autocomplete="current-password" required />
+            <small id="password-hint" hidden>At least 8 characters</small>
+          </label>
+          <p id="auth-error" class="form-error" role="alert" hidden></p>
+          <button type="submit" class="btn btn-primary btn-block" id="auth-submit">Log in</button>
+        </form>
+
+        <p class="auth-switch">
+          <span id="auth-switch-text">New to CloudSave?</span>
+          <button type="button" id="auth-switch">Create an account</button>
+        </p>
+      </div>
+      </div>
     </main>
 
     <!-- Signed in -->
-    <div id="app-view" hidden>
-      <header class="masthead">
-        <div class="topbar">
-          <span class="wordmark">S3 Uploads</span>
-          <button type="button" class="btn btn-quiet" id="logout">Log out</button>
+    <div id="app-view" class="shell" hidden>
+      <aside class="sidebar">
+        <div class="brand">
+          <svg class="logo" aria-hidden="true"><use href="#i-logo" /></svg>
+          <span>CloudSave</span>
         </div>
-        <h1 class="display handle" id="username"></h1>
-        <div class="masthead-row">
-          <p id="user-meta" class="meta"></p>
-          <label class="btn btn-primary" for="file-input">Upload images</label>
-          <input id="file-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple hidden />
-        </div>
-      </header>
 
-      <main>
-        <section id="gallery" class="sheet" aria-label="Your images" aria-busy="true"></section>
-
-        <label id="empty" class="empty" for="file-input" hidden>
-          <strong>No images yet</strong>
-          <span>Drop images anywhere on this page, or click to choose files. JPEG, PNG, WebP or GIF, up to 10 MB each.</span>
+        <label class="btn btn-primary btn-upload" for="file-input">
+          <svg class="icon" aria-hidden="true"><use href="#i-upload" /></svg>
+          Upload
         </label>
-      </main>
+
+        <nav class="nav" aria-label="Sections">
+          <a class="nav-item" href="#" aria-current="page">
+            <svg class="icon" aria-hidden="true"><use href="#i-images" /></svg>
+            My images
+            <span id="nav-count" class="nav-count"></span>
+          </a>
+        </nav>
+
+        <section class="storage" aria-label="Storage">
+          <p class="storage-title">Storage</p>
+          <p id="storage-used" class="storage-used"></p>
+          <div id="storage-bar" class="storage-bar"></div>
+          <ul id="storage-legend" class="storage-legend"></ul>
+        </section>
+      </aside>
+
+      <div class="main">
+        <header class="topbar">
+          <div class="brand brand-mobile">
+            <svg class="logo" aria-hidden="true"><use href="#i-logo" /></svg>
+          </div>
+          <label class="search">
+            <svg class="icon" aria-hidden="true"><use href="#i-search" /></svg>
+            <input id="search" type="search" placeholder="Search images" aria-label="Search images" autocomplete="off" />
+          </label>
+          <button type="button" class="avatar" id="avatar" popovertarget="account-menu" aria-label="Account"></button>
+          <div id="account-menu" class="menu" popover>
+            <div class="menu-head">
+              <span class="avatar avatar-lg" id="menu-avatar" aria-hidden="true"></span>
+              <div>
+                <strong id="username"></strong>
+                <span id="joined"></span>
+              </div>
+            </div>
+            <button type="button" class="menu-item" id="logout">
+              <svg class="icon" aria-hidden="true"><use href="#i-logout" /></svg>
+              Log out
+            </button>
+          </div>
+        </header>
+
+        <main class="content">
+          <div class="content-head">
+            <div>
+              <h1>My images</h1>
+              <p id="user-meta" class="meta"></p>
+            </div>
+            <div class="tools">
+              <label class="select">
+                <span class="visually-hidden">Sort by</span>
+                <select id="sort">
+                  <option value="newest">Newest first</option>
+                  <option value="oldest">Oldest first</option>
+                  <option value="name">Name A–Z</option>
+                  <option value="largest">Largest first</option>
+                </select>
+                <svg class="icon" aria-hidden="true"><use href="#i-chevron" /></svg>
+              </label>
+              <div class="segmented" role="group" aria-label="View">
+                <button type="button" data-view="grid" aria-pressed="true" aria-label="Grid view">
+                  <svg class="icon" aria-hidden="true"><use href="#i-grid" /></svg>
+                </button>
+                <button type="button" data-view="list" aria-pressed="false" aria-label="List view">
+                  <svg class="icon" aria-hidden="true"><use href="#i-list" /></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="selection-bar" class="selection-bar" hidden>
+            <button type="button" class="icon-btn" id="sel-clear" aria-label="Clear selection">
+              <svg class="icon" aria-hidden="true"><use href="#i-x" /></svg>
+            </button>
+            <span id="sel-count"></span>
+            <div class="selection-actions" id="sel-actions">
+              <button type="button" class="btn btn-soft-danger" id="sel-ask-delete">
+                <svg class="icon" aria-hidden="true"><use href="#i-trash" /></svg>
+                Delete
+              </button>
+            </div>
+            <div class="selection-actions" id="sel-confirm" hidden>
+              <span>Delete for good?</span>
+              <button type="button" class="btn btn-quiet" id="sel-cancel">Keep</button>
+              <button type="button" class="btn btn-danger" id="sel-delete">Delete</button>
+            </div>
+          </div>
+
+          <section id="gallery" class="gallery" data-view="grid" aria-label="Your images" aria-busy="true"></section>
+
+          <p id="no-results" class="no-results" hidden></p>
+
+          <label id="empty" class="empty" for="file-input" hidden>
+            <span class="empty-icon"><svg class="icon" aria-hidden="true"><use href="#i-upload" /></svg></span>
+            <strong>No images yet</strong>
+            <span>Drop images anywhere on this page, or click to choose files. JPEG, PNG, WebP or GIF, up to 10 MB each.</span>
+          </label>
+        </main>
+      </div>
+
+      <label class="fab" for="file-input" aria-label="Upload images">
+        <svg class="icon" aria-hidden="true"><use href="#i-upload" /></svg>
+      </label>
+      <input id="file-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple hidden />
     </div>
 
     <!-- Shown while dragging files over the window -->
     <div id="drop-overlay" class="drop-overlay" hidden>
-      <p>Drop to upload</p>
+      <div>
+        <svg class="icon" aria-hidden="true"><use href="#i-upload" /></svg>
+        <p>Drop to upload</p>
+      </div>
     </div>
 
     <!-- Upload progress -->
     <aside id="tray" class="tray" aria-label="Uploads" hidden>
+      <div class="tray-head">
+        <strong id="tray-title"></strong>
+        <button type="button" class="icon-btn" id="tray-toggle" aria-expanded="true" aria-label="Collapse uploads">
+          <svg class="icon" aria-hidden="true"><use href="#i-chevron" /></svg>
+        </button>
+        <button type="button" class="icon-btn" id="tray-close" aria-label="Close uploads" hidden>
+          <svg class="icon" aria-hidden="true"><use href="#i-x" /></svg>
+        </button>
+      </div>
       <ul id="tray-list"></ul>
     </aside>
 

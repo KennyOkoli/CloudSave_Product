@@ -5,10 +5,13 @@ let mode = "login";
 
 function setMode(next) {
   mode = next;
-  document.querySelectorAll(".switch [data-mode]").forEach((tab) => {
-    tab.setAttribute("aria-selected", String(tab.dataset.mode === mode));
-  });
   const registering = mode === "register";
+  $("#auth-title").textContent = registering ? "Create your account" : "Welcome back";
+  $("#auth-lede").textContent = registering
+    ? "Start saving your images to CloudSave"
+    : "Log in to your CloudSave account";
+  $("#auth-switch-text").textContent = registering ? "Already have an account?" : "New to CloudSave?";
+  $("#auth-switch").textContent = registering ? "Log in" : "Create an account";
   $("#auth-submit").textContent = registering ? "Create account" : "Log in";
   $("#password-hint").hidden = !registering;
   $("#auth-form").password.autocomplete = registering
@@ -23,11 +26,9 @@ function showError(message) {
 }
 
 export function initAuth({ onSignedIn, onSignedOut }) {
-  document
-    .querySelectorAll(".switch [data-mode]")
-    .forEach((tab) =>
-      tab.addEventListener("click", () => setMode(tab.dataset.mode)),
-    );
+  $("#auth-switch").addEventListener("click", () =>
+    setMode(mode === "login" ? "register" : "login"),
+  );
 
   $("#auth-form").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -53,6 +54,7 @@ export function initAuth({ onSignedIn, onSignedOut }) {
   });
 
   $("#logout").addEventListener("click", async () => {
+    $("#account-menu").hidePopover();
     await api("/api/auth/logout", { method: "POST" });
     onSignedOut();
   });

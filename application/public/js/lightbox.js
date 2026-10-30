@@ -1,6 +1,6 @@
 import { api } from "./api.js";
 import { $, formatBytes, formatDate, toast } from "./ui.js";
-import { getImages, onImagesChange, removeImage } from "./gallery.js";
+import { getVisible, onImagesChange, removeImage } from "./gallery.js";
 
 const dialog = $("#lightbox");
 // Track the open image by id, not list position: the list can reload or
@@ -11,11 +11,11 @@ let lastIndex = 0;
 let returnFocusTo = null;
 
 function currentIndex() {
-  return getImages().findIndex((image) => image.id === currentId);
+  return getVisible().findIndex((image) => image.id === currentId);
 }
 
 export function openLightbox(i) {
-  currentId = getImages()[i]?.id ?? null;
+  currentId = getVisible()[i]?.id ?? null;
   returnFocusTo = document.activeElement;
   render();
   dialog.showModal();
@@ -26,7 +26,7 @@ function close() {
 }
 
 function step(delta) {
-  const images = getImages();
+  const images = getVisible();
   const next = (currentIndex() + delta + images.length) % images.length;
   currentId = images[next].id;
   render();
@@ -39,7 +39,7 @@ function setConfirming(on) {
 }
 
 function render() {
-  const images = getImages();
+  const images = getVisible();
   const index = currentIndex();
   const image = images[index];
   if (!image) return;
@@ -62,7 +62,7 @@ function render() {
 }
 
 async function deleteCurrent() {
-  const image = getImages()[currentIndex()];
+  const image = getVisible()[currentIndex()];
   if (!image) return;
   const button = $('[data-action="delete"]');
   button.disabled = true;
@@ -79,8 +79,9 @@ async function deleteCurrent() {
 }
 
 // Keep the lightbox in step when the list changes underneath it (delete, new upload).
-onImagesChange((images) => {
+onImagesChange(() => {
   if (!dialog.open) return;
+  const images = getVisible();
   if (!images.length) return close();
   // If the open image was deleted, show whichever one slid into its place.
   if (currentIndex() === -1) {
