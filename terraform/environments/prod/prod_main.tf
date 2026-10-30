@@ -1,4 +1,4 @@
-/*module "vpc" {
+module "vpc" {
     source = "../../modules/vpc"
 }
 
@@ -17,8 +17,7 @@ module "secrets" {
 module "s3" {
     source = "../../modules/s3"
 }
-*/
-/*
+
 module "IdentityCenter" {
     source = "../../modules/IdentityCenter"
     providers = {
@@ -27,10 +26,11 @@ module "IdentityCenter" {
     s3-arn = module.s3.s3-arn
     secret-arn = module.secrets.secret-manager-arn
     ec2-arn = module.rds.ec2_arn
-}*/
-/*
+}
+
 module "github" {
     source = "../../modules/github"
+    ecr_arn = module.ecs.ecr-arn
 }
 
 module "ecs" {
@@ -48,6 +48,7 @@ module "ecs" {
     db_username = module.rds.db_username
     db_password = module.rds.db_password
     s3_bucket = module.s3.bucket-name
+    region = var.aws_region
 }
 
 module "ec2" {
@@ -58,4 +59,4 @@ module "ec2" {
     nacl = module.vpc.vpc-nacls
     public-subnet = module.vpc.vpc-public-subnet
     ecs-sg-var = module.ecs.ecs-sg
-}*/
+}

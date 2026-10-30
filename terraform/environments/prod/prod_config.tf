@@ -1,4 +1,4 @@
-/*terraform{
+terraform{
     backend "s3" {
         bucket = "cloudsave-prod-tfstate"
         key = "prod/terraform.tfstate"
@@ -29,4 +29,4 @@ variable "identity_center_region" {
 variable "aws_region"{
     type = string
     default = "af-south-1"
-}*/
+}
