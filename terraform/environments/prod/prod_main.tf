@@ -16,8 +16,9 @@ module "secrets" {
 
 module "s3" {
     source = "../../modules/s3"
+    bucket_name = var.bucket
 }
-
+/*
 module "IdentityCenter" {
     source = "../../modules/IdentityCenter"
     providers = {
@@ -27,7 +28,7 @@ module "IdentityCenter" {
     secret-arn = module.secrets.secret-manager-arn
     ec2-arn = module.rds.ec2_arn
 }
-
+*/
 module "github" {
     source = "../../modules/github"
     ecr_arn = module.ecs.ecr-arn

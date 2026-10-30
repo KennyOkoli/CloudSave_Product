@@ -30,3 +30,7 @@ variable "aws_region"{
     type = string
     default = "af-south-1"
 }
+
+variable "bucket" {
+    default = "cloudsave-bucket-prod"
+}
