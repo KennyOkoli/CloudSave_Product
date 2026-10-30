@@ -15,7 +15,7 @@ resource "aws_launch_template" "ec2-template" {
 }
 
 resource "aws_autoscaling_group" "ec2-autoscale" {
-    name = "ec2-autoscale"
+    name = "ec2-autoscale-${local.prefix}"
     vpc_zone_identifier = var.vpc-prv-subnets
     desired_capacity = 2
     min_size = 1
@@ -40,7 +40,7 @@ resource "aws_autoscaling_group" "ec2-autoscale" {
 }
 
 resource "aws_security_group" "ec2-compute-sg" {
-    name = "ec2-task-sg"
+    name = "ec2-task-sg-${local.prefix}"
     vpc_id = var.vpc_id
 }
 

@@ -6,6 +6,12 @@ locals {
   oidc_arn = data.aws_iam_openid_connect_provider.github-id.arn
 }
 
+variable "environment" {}
+
+locals {
+    prefix = var.environment
+}
+
 data "aws_iam_policy_document" "oidc_policy_doc" {
     statement {
         effect = "Allow"
@@ -28,7 +34,7 @@ data "aws_iam_policy_document" "oidc_policy_doc" {
 }
 
 resource "aws_iam_role" "github-role" {
-    name = "github-role"
+    name = "github-role-${local.prefix}"
     assume_role_policy = data.aws_iam_policy_document.oidc_policy_doc.json
 }
 

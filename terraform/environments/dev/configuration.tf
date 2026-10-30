@@ -42,3 +42,7 @@ variable "aws_region"{
 variable "bucket" {
     default = "cloudsave-bucket-871145212791"
 }
+
+variable "env" {
+    default = "dev"
+}

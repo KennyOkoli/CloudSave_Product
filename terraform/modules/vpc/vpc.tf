@@ -7,6 +7,12 @@ terraform {
   }
 }
 
+variable "environment" {}
+
+locals {
+    prefix = var.environment
+}
+
 variable "account"{
     type = string
     default = "871145212791"

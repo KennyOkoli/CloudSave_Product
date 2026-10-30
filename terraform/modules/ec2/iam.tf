@@ -10,7 +10,7 @@ data "aws_iam_policy_document" "ec2-trust" {
 }
 
 resource "aws_iam_role" "ec2-role" {
-    name = "ec2-role"
+    name = "ec2-role-${local.prefix}"
     assume_role_policy = data.aws_iam_policy_document.ec2-trust.json
 }
 

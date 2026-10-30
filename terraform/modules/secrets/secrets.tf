@@ -7,10 +7,14 @@ terraform {
   }
 }
 
+variable "environment" {}
 
+locals {
+    prefix = var.environment
+}
 
 resource "aws_secretsmanager_secret" "cloudsave-db-secrets" {
-    name = "cloudsave-db-secrets"
+    name = "cloudsave-db-secrets-${local.prefix}"
 }
 
 resource "aws_secretsmanager_secret_version" "db-secrets" {

@@ -17,15 +17,6 @@ provider "aws"{
     region = var.aws_region
 }
 
-provider "aws" {
-    alias = "identity_center"
-    region = var.identity_center_region 
-}
-
-variable "identity_center_region" {
-    default = "us-east-1"
-}
-
 variable "aws_region"{
     type = string
     default = "af-south-1"
@@ -33,4 +24,8 @@ variable "aws_region"{
 
 variable "bucket" {
     default = "cloudsave-bucket-prod"
+}
+
+variable "env" {
+    default = "prod"
 }

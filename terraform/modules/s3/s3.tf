@@ -6,6 +6,11 @@ terraform {
     }
   }
 }
+variable "environment" {}
+
+locals {
+    prefix = var.environment
+}
 
 variable "bucket_name" {}
 

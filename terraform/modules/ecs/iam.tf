@@ -43,7 +43,7 @@ data "aws_iam_policy_document" "task_def_trust" {
 }
 
 resource "aws_iam_role" "task-def-role" {
-    name = "task-def-role"
+    name = "task-def-role-${local.prefix}"
     assume_role_policy = data.aws_iam_policy_document.task_def_trust.json
 }
 

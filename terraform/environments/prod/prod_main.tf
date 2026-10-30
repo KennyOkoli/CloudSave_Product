@@ -1,5 +1,6 @@
 module "vpc" {
     source = "../../modules/vpc"
+    environment = var.env
 }
 
 module "rds" {
@@ -8,15 +9,18 @@ module "rds" {
     private_subnets = module.vpc.private-subnets
     az = module.vpc.azones
     vpc-id = module.vpc.vpc-id
+    environment = var.env
 }
 
 module "secrets" {
     source = "../../modules/secrets"
+    environment = var.env
 }
 
 module "s3" {
     source = "../../modules/s3"
     bucket_name = var.bucket
+    environment = var.env
 }
 /*
 module "IdentityCenter" {
@@ -32,6 +36,7 @@ module "IdentityCenter" {
 module "github" {
     source = "../../modules/github"
     ecr_arn = module.ecs.ecr-arn
+    environment = var.env
 }
 
 module "ecs" {
@@ -50,6 +55,7 @@ module "ecs" {
     db_password = module.rds.db_password
     s3_bucket = module.s3.bucket-name
     region = var.aws_region
+    environment = var.env
 }
 
 module "ec2" {
@@ -60,4 +66,5 @@ module "ec2" {
     nacl = module.vpc.vpc-nacls
     public-subnet = module.vpc.vpc-public-subnet
     ecs-sg-var = module.ecs.ecs-sg
+    environment = var.env
 }

@@ -8,7 +8,7 @@ variable "vpc" {}
 variable "target-arn" {}
 
 resource "aws_ecs_service" "cloudsave-ecs"{
-    name = "cloudsave-ecs"
+    name = "cloudsave-ecs-${local.prefix}"
     cluster = aws_ecs_cluster.cloudsave-cluster.id
     task_definition = aws_ecs_task_definition.cloudsave-task-def.arn
     desired_count = 2

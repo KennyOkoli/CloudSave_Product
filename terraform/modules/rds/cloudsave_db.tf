@@ -7,6 +7,12 @@ terraform {
   }
 }
 
+variable "environment" {}
+
+locals {
+    prefix = var.environment
+}
+
 variable "db_subnet_tags" {
     default = ["db-subnet-1", "db-subnet-2"]
 }
@@ -32,8 +38,8 @@ locals{
 
 
 resource "aws_db_instance" "CloudSave_db"{
-    db_name = "CloudSave_db"
-    identifier = "cloudsave"
+    db_name = "CloudSave_db-${local.prefix}"
+    identifier = "cloudsave-${local.prefix}"
     engine = "mysql"
     engine_version = "8.4.11"
     instance_class = "db.t3.micro"
@@ -49,7 +55,7 @@ resource "aws_db_instance" "CloudSave_db"{
 }
 
 resource "aws_db_parameter_group" "db_parameter" {
-    name_prefix = "mysql84-parameter"
+    name_prefix = "mysql84-parameter-${local.prefix}"
     family = "mysql8.4"
 
     parameter {
@@ -59,14 +65,14 @@ resource "aws_db_parameter_group" "db_parameter" {
 }
 
 resource "aws_db_subnet_group" "db_subnet_group" {
-    name = "db_subnet_group"
+    name = "db_subnet_group_${local.prefix}"
     subnet_ids = aws_subnet.db_subnet[*].id
 }
 
 variable "vpc-id" {}
 
 resource "aws_security_group" "mysql_db_sg" {
-    name = "postgres_db_sg"
+    name = "postgres_db_sg_${local.prefix}"
     vpc_id = var.vpc-id
 }
 
@@ -157,7 +163,7 @@ resource "aws_instance" "db_ec2_jumphost" {
 }
 
 resource "aws_security_group" "ec2_sg" {
-    name = "ec2-db-sg"
+    name = "ec2-db-sg-${local.prefix}"
     vpc_id = var.vpc-id
 }
 
@@ -180,7 +186,7 @@ resource "aws_security_group_rule" "ec2_sg_rule_eg"{
 }
 
 resource "aws_iam_role" "ec2_role" {
-   name = "ec2_role"
+   name = "ec2_role_${local.prefix}"
    assume_role_policy = jsonencode(
      {
         Version = "2012-10-17"

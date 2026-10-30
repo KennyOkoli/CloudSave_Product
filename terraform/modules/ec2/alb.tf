@@ -1,6 +1,12 @@
 variable "public-subnet" {}
 variable "ecs-sg-var" {}
 
+variable "environment" {}
+
+locals {
+    prefix = var.environment
+}
+
 
 resource "aws_alb_target_group" "cloudsave-target-group" {
     vpc_id = var.vpc_id
@@ -20,7 +26,7 @@ resource "aws_alb_target_group" "cloudsave-target-group" {
 }
 
 resource "aws_alb" "cloudsave-alb" {
-    name = "cloudsave-alb"
+    name = "cloudsave-alb-${local.prefix}"
     security_groups = [aws_security_group.alb-sg.id]
     subnets = var.public-subnet
     internal = false
@@ -42,7 +48,7 @@ resource "aws_alb_listener" "cloudsave-alb-listener" {
 }
 
 resource "aws_security_group" "alb-sg" {
-    name = "alb-sg"
+    name = "alb-sg-${local.prefix}"
     vpc_id = var.vpc_id
 }
 
