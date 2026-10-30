@@ -93,6 +93,29 @@ function trayRow(file) {
 }
 
 let active = 0;
+const tally = { done: 0, failed: 0 };
+
+function renderTrayTitle() {
+  const { done, failed } = tally;
+  $("#tray-title").textContent = active
+    ? `Uploading ${plural(active, "image")}`
+    : failed
+      ? `${plural(failed, "upload")} failed`
+      : `${plural(done, "upload")} complete`;
+  $("#tray-close").hidden = active > 0;
+}
+
+export function clearTray() {
+  $("#tray-list").replaceChildren();
+  $("#tray").hidden = true;
+  tally.done = tally.failed = 0;
+}
+
+function setTrayOpen(open) {
+  $("#tray-toggle").setAttribute("aria-expanded", String(open));
+  $("#tray-toggle").setAttribute("aria-label", open ? "Collapse uploads" : "Expand uploads");
+  $("#tray-list").hidden = !open;
+}
 
 export async function uploadFiles(fileList) {
   const files = [...fileList];
@@ -100,46 +123,43 @@ export async function uploadFiles(fileList) {
 
   $("#tray").hidden = false;
   const queue = files.map((file) => ({ file, row: trayRow(file) }));
-  let failed = 0;
   active += files.length;
+  renderTrayTitle();
 
   async function worker() {
     for (let job = queue.shift(); job; job = queue.shift()) {
       try {
         addImage(await uploadOne(job.file, job.row));
         job.row.setState("done");
+        tally.done++;
       } catch (err) {
-        failed++;
+        tally.failed++;
         job.row.setState("failed", err.message);
         if (err instanceof ApiError && err.status === 401) location.reload();
       }
+      active--;
+      renderTrayTitle();
     }
   }
   await Promise.all(Array.from({ length: PARALLEL }, worker));
 
-  active -= files.length;
-  if (active === 0) finishTray(failed);
+  if (active === 0) finishTray();
 }
 
-function finishTray(failed) {
-  const clear = () => {
-    $("#tray-list").replaceChildren();
-    $("#tray").hidden = true;
-  };
-  if (!failed) return setTimeout(() => active === 0 && clear(), 2500);
+function finishTray() {
+  if (!tally.failed) return setTimeout(() => active === 0 && clearTray(), 2500);
 
   // Leave failures on screen until dismissed.
   $("#tray-list")
     .querySelectorAll('[data-state="done"]')
     .forEach((li) => li.remove());
-  const dismiss = document.createElement("li");
-  dismiss.className = "tray-dismiss";
-  dismiss.innerHTML = `<span></span><button type="button" class="btn btn-quiet">Dismiss</button>`;
-  dismiss.querySelector("span").textContent =
-    `${plural(failed, "upload")} failed`;
-  dismiss.querySelector("button").addEventListener("click", clear);
-  $("#tray-list").prepend(dismiss);
+  setTrayOpen(true);
 }
+
+$("#tray-close").addEventListener("click", clearTray);
+$("#tray-toggle").addEventListener("click", () =>
+  setTrayOpen($("#tray-list").hidden),
+);
 
 // Drag files anywhere over the window to upload.
 export function enableDropUploads(isSignedIn) {
