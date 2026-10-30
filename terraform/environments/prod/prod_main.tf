@@ -1,4 +1,4 @@
-module "vpc" {
+/*module "vpc" {
     source = "../../modules/vpc"
 }
 
@@ -17,7 +17,7 @@ module "secrets" {
 module "s3" {
     source = "../../modules/s3"
 }
-
+*/
 /*
 module "IdentityCenter" {
     source = "../../modules/IdentityCenter"
