@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - 'terraform/environments/dev/**'
-      - '.github/workflows/dev_deploy.yaml'
       - 'terraform/modules/**'
 
 defaults: 
