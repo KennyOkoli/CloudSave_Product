@@ -1,0 +1,44 @@
+name: Deploy Cloud Infrastructure to Production
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "terraform/environments/prod/**"
+      - "terraform/modules/**"
+      - ".github/workflows/cloud_prod_deploy.yaml"
+
+permissions:
+  id-token: write
+  contents: read
+
+defaults:
+   run:
+     working-directory: terraform/environments/prod/
+
+jobs:
+  authenticate-plan-apply:
+    environments: Production-Infrastructure
+    runs-on: ubuntu-latest
+    steps:
+      - name: authenticate
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{var.ROLE_ARN}}
+          aws-region: af-south-1
+
+      - name: get-source-code
+        uses: actions/checkout@v6
+        
+      - name: install-terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: init
+        run: terraform init
+
+      - name: plan
+        run: terraform plan -out=plan
+
+      - name: apply
+        run: terraform apply --auto-approve
