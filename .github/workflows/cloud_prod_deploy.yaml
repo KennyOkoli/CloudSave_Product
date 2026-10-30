@@ -19,13 +19,13 @@ defaults:
 
 jobs:
   authenticate-plan-apply:
-    environments: Production-Infrastructure
+    environment: Production-Infrastructure
     runs-on: ubuntu-latest
     steps:
       - name: authenticate
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{var.ROLE_ARN}}
+          role-to-assume: ${{vars.ROLE_ARN}}
           aws-region: af-south-1
 
       - name: get-source-code
