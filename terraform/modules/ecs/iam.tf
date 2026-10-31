@@ -1,10 +1,10 @@
 resource "aws_iam_role" "task-role" {
-    name = "task-role"
+    name = "task-role-${local.prefix}"
     assume_role_policy = data.aws_iam_policy_document.task_def_trust.json
 }
 
 resource "aws_iam_role_policy" "task-role-policy" {
-    name = "task-role-policy"
+    name = "task-role-policy-${local.prefix}"
     role = aws_iam_role.task-role.id
     policy = data.aws_iam_policy_document.task-actions.json
 }

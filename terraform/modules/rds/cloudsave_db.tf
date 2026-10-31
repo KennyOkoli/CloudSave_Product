@@ -72,7 +72,7 @@ resource "aws_db_subnet_group" "db_subnet_group" {
 variable "vpc-id" {}
 
 resource "aws_security_group" "mysql_db_sg" {
-    name = "postgres_db_sg_${local.prefix}"
+    name = "mysql_db_sg_${local.prefix}"
     vpc_id = var.vpc-id
 }
 
