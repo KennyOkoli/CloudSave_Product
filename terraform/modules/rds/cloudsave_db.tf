@@ -21,6 +21,8 @@ variable "db-subnet-cidr" {
     default = "172.0.200.0/24"
 }
 
+variable "vpc-id" {}
+
 variable "public_ip"{
     type = string
     default = "0.0.0.0/0"
@@ -50,7 +52,7 @@ resource "aws_db_instance" "CloudSave_db"{
     multi_az = false
     skip_final_snapshot = true
     db_subnet_group_name = aws_db_subnet_group.db_subnet_group.name
-    vpc_security_group_ids = [aws_security_group.mysql_db_sg.id]
+    vpc_security_group_ids = [aws_security_group.mysql_sg.id]
     parameter_group_name = aws_db_parameter_group.db_parameter.name
 }
 
@@ -69,15 +71,19 @@ resource "aws_db_subnet_group" "db_subnet_group" {
     subnet_ids = aws_subnet.db_subnet[*].id
 }
 
-variable "vpc-id" {}
-
+/*
 resource "aws_security_group" "mysql_db_sg" {
     name = "mysql_db_sg_${local.prefix}"
+    vpc_id = var.vpc-id
+}*/
+
+resource "aws_security_group" "mysql_sg" {
+    name = "mysql_sg_${local.prefix}"
     vpc_id = var.vpc-id
 }
 
 resource "aws_security_group_rule" "mysql_db_sg_rule"{
-    security_group_id = aws_security_group.mysql_db_sg.id
+    security_group_id = aws_security_group.mysql_sg.id
     cidr_blocks = [var.public_ip]
     type = "ingress"
     protocol = "tcp"
@@ -86,7 +92,7 @@ resource "aws_security_group_rule" "mysql_db_sg_rule"{
 }
 
 resource "aws_security_group_rule" "mysql_db_sg_rule_eg"{
-    security_group_id = aws_security_group.mysql_db_sg.id
+    security_group_id = aws_security_group.mysql_sg.id
     cidr_blocks = [var.public_ip]
     type = "egress"
     protocol = "tcp"
@@ -148,7 +154,7 @@ resource "aws_instance" "db_ec2_jumphost" {
     ami = "ami-0527144c5a042f57d"
     instance_type = "t3.micro"
     subnet_id = var.private_subnets[0]
-    vpc_security_group_ids = [aws_security_group.ec2_sg.id]
+    vpc_security_group_ids = [aws_security_group.ec2_security.id]
     iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.name
 
     user_data = <<EOF
@@ -161,14 +167,19 @@ resource "aws_instance" "db_ec2_jumphost" {
     
     EOF
 }
-
+/*
 resource "aws_security_group" "ec2_sg" {
     name = "ec2-db-sg-${local.prefix}"
+    vpc_id = var.vpc-id
+}*/
+
+resource "aws_security_group" "ec2_security" {
+    name = "ec2-host-sg-${local.prefix}"
     vpc_id = var.vpc-id
 }
 
 resource "aws_security_group_rule" "ec2_sg_rule"{
-    security_group_id = aws_security_group.ec2_sg.id
+    security_group_id = aws_security_group.ec2_security.id
     cidr_blocks = [var.public_ip]
     type = "ingress"
     protocol = "tcp"
@@ -177,7 +188,7 @@ resource "aws_security_group_rule" "ec2_sg_rule"{
 }
 
 resource "aws_security_group_rule" "ec2_sg_rule_eg"{
-    security_group_id = aws_security_group.ec2_sg.id
+    security_group_id = aws_security_group.ec2_security.id
     cidr_blocks = [var.public_ip]
     type = "egress"
     protocol = "tcp"
