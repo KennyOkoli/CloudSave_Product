@@ -9,10 +9,12 @@ variable "db_username" {}
 variable "db_password" {}
 variable "s3_bucket" {}
 
+variable "task-def" {}
+
 resource "aws_ecs_task_definition" "cloudsave-task-def" {
     network_mode = "awsvpc"
     requires_compatibilities = ["EC2"]
-    family = "web-app"
+    family = var.task-def
     execution_role_arn = aws_iam_role.task-def-role.arn
     task_role_arn = aws_iam_role.task-role.arn
 

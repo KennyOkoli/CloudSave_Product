@@ -44,6 +44,10 @@ module "github" {
     environment = var.env
 }
 
+variable "task_def" {
+    default = "web-app-prod"
+}
+
 module "ecs" {
     source = "../../modules/ecs"
     s3 = module.s3.s3-arn
@@ -61,6 +65,7 @@ module "ecs" {
     s3_bucket = module.s3.bucket-name
     region = var.aws_region
     environment = var.env
+    task-def = var.task_def
 }
 
 module "ec2" {
