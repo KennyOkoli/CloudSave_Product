@@ -96,8 +96,8 @@ jobs:
       uses: aws-actions/amazon-ecs-deploy-task-definition@v2
       with:
            task-definition: ${{steps.update-task-def.outputs.task-definition}}
-           service: cloudsave-ecs
-           cluster: cloudsave-cluster
+           service: cloudsave-ecs-dev
+           cluster: cloudsave-cluster-dev
       
 
 
