@@ -10,6 +10,7 @@ module "rds" {
     az = module.vpc.azones
     vpc-id = module.vpc.vpc-id
     environment = var.env
+    sg-name = "ec2-db-sg"
 }
 
 module "secrets" {

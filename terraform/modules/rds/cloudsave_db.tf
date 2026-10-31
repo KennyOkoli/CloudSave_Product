@@ -167,11 +167,13 @@ resource "aws_instance" "db_ec2_jumphost" {
     
     EOF
 }
-
+# Dev: "ec2-db-sg"
+# Truth: "ec2-db-sg-${local.prefix}"
 resource "aws_security_group" "ec2_sg" {
-    name = "ec2-db-sg-${local.prefix}"
+    name = var.sg-name
     vpc_id = var.vpc-id
 }
+variable "sg-name" {}
 
 resource "aws_security_group" "ec2_security" {
     name = "ec2-host-sg-${local.prefix}"
