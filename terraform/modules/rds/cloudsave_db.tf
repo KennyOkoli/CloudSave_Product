@@ -71,11 +71,11 @@ resource "aws_db_subnet_group" "db_subnet_group" {
     subnet_ids = aws_subnet.db_subnet[*].id
 }
 
-/*
+
 resource "aws_security_group" "mysql_db_sg" {
-    name = "mysql_db_sg_${local.prefix}"
+    name = "postgres_db_sg_${local.prefix}"
     vpc_id = var.vpc-id
-}*/
+}
 
 resource "aws_security_group" "mysql_sg" {
     name = "mysql_sg_${local.prefix}"
@@ -167,11 +167,11 @@ resource "aws_instance" "db_ec2_jumphost" {
     
     EOF
 }
-/*
+
 resource "aws_security_group" "ec2_sg" {
     name = "ec2-db-sg-${local.prefix}"
     vpc_id = var.vpc-id
-}*/
+}
 
 resource "aws_security_group" "ec2_security" {
     name = "ec2-host-sg-${local.prefix}"
