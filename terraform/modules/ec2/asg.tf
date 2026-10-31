@@ -11,7 +11,10 @@ resource "aws_launch_template" "ec2-template" {
     iam_instance_profile {
       arn = aws_iam_instance_profile.ec2-profile.arn 
     }
-    user_data = filebase64("${path.module}/user_data.sh")
+    user_data = base64encode(
+      templatefile("${path.module}/user_data.sh", {environment = local.prefix} )
+    )
+    #user_data = filebase64("${path.module}/user_data.sh")
 }
 
 resource "aws_autoscaling_group" "ec2-autoscale" {
