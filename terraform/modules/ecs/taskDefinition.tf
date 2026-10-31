@@ -2,7 +2,7 @@ variable "db_port" {
     default = "3306"
 }
 variable "db_host" {
-    default = "cloudsave.czqsco2eaxj9.af-south-1.rds.amazonaws.com"
+    default = "cloudsave-dev.czqsco2eaxj9.af-south-1.rds.amazonaws.com"
 }
 variable "db_name" {}
 variable "db_username" {}
