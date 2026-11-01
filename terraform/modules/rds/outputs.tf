@@ -19,5 +19,5 @@ output "db_password" {
 }
 
 output "db_host" {
-    value = aws_db_instance.CloudSave_db.endpoint
+    value = aws_db_instance.CloudSave_db.address
 }
