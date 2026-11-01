@@ -89,3 +89,4 @@ jobs:
            task-definition: ${{steps.update-task-def.outputs.task-definition}}
            service: ${{vars.SERVICE}}
            cluster: ${{vars.CLUSTER}}
+           

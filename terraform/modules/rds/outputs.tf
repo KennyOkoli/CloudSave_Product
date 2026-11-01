@@ -17,3 +17,7 @@ output "db_username" {
 output "db_password" {
     value = local.db_credentials.password
 }
+
+output "db_host" {
+    value = aws_db_instance.CloudSave_db.endpoint
+}

@@ -1,9 +1,11 @@
 variable "db_port" {
     default = "3306"
 }
+/*
 variable "db_host" {
     default = "cloudsave-dev.czqsco2eaxj9.af-south-1.rds.amazonaws.com"
-}
+}*/
+variable "db-host" {}
 variable "db_name" {}
 variable "db_username" {}
 variable "db_password" {}
@@ -46,7 +48,7 @@ resource "aws_ecs_task_definition" "cloudsave-task-def" {
             },
             {
                 name = "DB_HOST"
-                value = var.db_host
+                value = var.db-host
             },
             {   name = "S3_BUCKET"
                 value = var.s3_bucket

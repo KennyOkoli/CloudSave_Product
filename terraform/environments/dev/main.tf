@@ -62,6 +62,7 @@ module "ecs" {
     region = var.aws_region
     environment = var.env
     task-def = var.task_def_dev
+    db-host = module.rds.db_host
 }
 
 module "ec2" {
