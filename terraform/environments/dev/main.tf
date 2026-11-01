@@ -1,8 +1,8 @@
 module "vpc" {
     source = "../../modules/vpc"
     environment = var.env
-}
-
+} # I have shutdown the dev env since prod is live already, just to save cost
+/*
 module "rds" {
     source = "../../modules/rds"   
     secret-manager-id = module.secrets.secret-id
@@ -74,4 +74,4 @@ module "ec2" {
     public-subnet = module.vpc.vpc-public-subnet
     ecs-sg-var = module.ecs.ecs-sg
     environment = var.env
-}
+}*/
