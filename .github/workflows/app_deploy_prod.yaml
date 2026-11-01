@@ -5,7 +5,7 @@ on:
       - main
     paths:
       - "application/**"
-      #- ".github/workflows/app_deploy_prod.yaml"
+      - ".github/workflows/app_deploy_prod.yaml"
 
 permissions:
   id-token: write
@@ -50,7 +50,7 @@ jobs:
     - name: get identity
       uses: aws-actions/configure-aws-credentials@v4
       with:
-         role-to-assume: arn:aws:iam::871145212791:role/github-role-dev
+         role-to-assume: arn:aws:iam::871145212791:role/${{vars.ROLE}}
          aws-region: af-south-1
     
     - name: test_credentials
@@ -65,7 +65,7 @@ jobs:
       env:
          REPO_URL: ${{steps.login-ecr.outputs.registry}}
       run: |
-           url='${{env.REPO_URL}}/cloudsave-repo-dev:${{github.sha}}'         
+           url='${{env.REPO_URL}}/${{vars.REPO}}:${{github.sha}}'         
            echo "repo_url=$url" >> $GITHUB_OUTPUT
 
     - name: build-tag-push
@@ -77,7 +77,7 @@ jobs:
       id: update-task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-          task-definition-family: web-app
+          task-definition-family: ${{vars.TASK_FAMILY}}
           container-name: cloudsave-app
           image: ${{steps.repo.outputs.repo_url}}
 
@@ -85,5 +85,5 @@ jobs:
       uses: aws-actions/amazon-ecs-deploy-task-definition@v2
       with:
            task-definition: ${{steps.update-task-def.outputs.task-definition}}
-           service: cloudsave-ecs-dev
-           cluster: cloudsave-cluster-dev
+           service: ${{vars.SERVICE}}
+           cluster: ${{vars.CLUSTER}}
