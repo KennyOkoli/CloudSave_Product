@@ -1,7 +1,9 @@
-module "vpc" {
+# I have shutdown the dev env since prod is live already, just to save cost
+
+/*module "vpc" {
     source = "../../modules/vpc"
     environment = var.env
-} # I have shutdown the dev env since prod is live already, just to save cost
+} 
 /*
 module "rds" {
     source = "../../modules/rds"   

@@ -1,5 +1,5 @@
 data "aws_iam_openid_connect_provider" "github-id" {
-    arn = "arn:aws:iam::871145212791:oidc-provider/token.actions.githubusercontent.com"
+    arn = "arn:aws:iam::247670276320:oidc-provider/token.actions.githubusercontent.com"
 }
 
 locals {

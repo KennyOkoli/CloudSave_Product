@@ -1,4 +1,4 @@
-terraform{
+/* terraform{
     backend "s3" {
         bucket = "cloudsave-terraform-state"
         key = "dev/terraform.tfstate"
@@ -45,4 +45,4 @@ variable "bucket" {
 
 variable "env" {
     default = "dev"
-}
+}*/

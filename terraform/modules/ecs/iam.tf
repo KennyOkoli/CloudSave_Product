@@ -17,15 +17,12 @@ data "aws_iam_policy_document" "task-actions" {
           "s3:PutObject",
           "s3:ListBucket",
           "s3:DeleteObject",
-          "secretsmanager:GetSecretValue",
-          "logs:CreateLogStream",
-          "logs:PullLogEvents"
+          "secretsmanager:GetSecretValue"
        ]
        resources = [
           var.s3,
           "${var.s3}/*",
-          var.secrets,
-          aws_cloudwatch_log_group.cloudsave_logs.arn
+          var.secrets
        ]
     }
 }
@@ -63,7 +60,9 @@ data "aws_iam_policy_document" "role-policy" {
         "logs:CreateLogStream",
         "logs:PutLogEvents"
         ]
-        resources = [aws_ecr_repository.cloudsave-repo.arn]
+        resources = [
+            aws_ecr_repository.cloudsave-repo.arn,
+            "${aws_cloudwatch_log_group.cloudsave_logs.arn}:*"]
     }
     statement {
         effect = "Allow"
