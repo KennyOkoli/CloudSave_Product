@@ -52,7 +52,7 @@ jobs:
     - name: get identity
       uses: aws-actions/configure-aws-credentials@v4
       with:
-         role-to-assume: arn:aws:iam::871145212791:role/${{vars.ROLE}}
+         role-to-assume: ${{vars.ROLE}}
          aws-region: af-south-1
     
     - name: test_credentials
