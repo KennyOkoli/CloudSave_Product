@@ -149,7 +149,7 @@ resource "aws_route_table_association" "db_subnet_to_route" {
 }
 
 variable "private_subnets" {}
-
+/*
 resource "aws_instance" "db_ec2_jumphost" {
     ami = "ami-0527144c5a042f57d"
     instance_type = "t3.micro"
@@ -166,7 +166,7 @@ resource "aws_instance" "db_ec2_jumphost" {
     systemctl start amazon-ssm-agent
     
     EOF
-}
+}*/
 # Dev: "ec2-db-sg"
 # Truth: "ec2-db-sg-${local.prefix}"
 resource "aws_security_group" "ec2_sg" {

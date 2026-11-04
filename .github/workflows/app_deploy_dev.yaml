@@ -1,103 +1,103 @@
-# name: Build image, push to ecr and update ecs
-# on:
-#   push:
-#     branches:
-#       - main
-#     paths:
-#       - "application/**"
+name: Build image, push to ecr and update ecs
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "application/**"
 
-# permissions:
-#   id-token: write
-#   contents: read
+permissions:
+  id-token: write
+  contents: read
 
-# defaults:
-#   run:
-#    working-directory: application/
+defaults:
+  run:
+   working-directory: application/
 
-# jobs:
-#   build_and_test: # This test pulls my repo files including the docker image and runs the node npm test
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v4
-#       - name: build-image
-#         run: docker build -t cloudsave .
+jobs:
+  build_and_test: # This test pulls my repo files including the docker image and runs the node npm test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: build-image
+        run: docker build -t cloudsave .
 
-#       - name: build-test
-#         env:
-#           JWT_SECRET: change-me-to-a-long-random-string
-#           DB_HOST: cloudsave.czqsco2eaxj9.af-south-1.rds.amazonaws.com
-#           DB_PORT: 3306
-#           DB_NAME: CloudSave_db
-#           DB_USERNAME: Kenny
-#           DB_PASSWORD: kenny2007
-#           S3_BUCKET: cloudsave-bucket-871145212791
-#           ENABLE_BACKGROUND_JOBS: true
-#           SKIP_DB_CHECK: false
-#           SKIP_S3_CHECK: false
-#         run: |
-#              docker run -d --name cloud-debug -p 3000:4000 \
-#              -e DB_HOST \
-#              -e DB_NAME \
-#              -e DB_PORT \
-#              -e DB_USERNAME \
-#              -e DB_PASSWORD \
-#              -e S3_BUCKET \
-#              -e SKIP_DB_CHECK=true -e JWT_SECRET=abcdefghijklmnopqrstuvwxyhiyvjgyukvfgyjm -e SKIP_S3_CHECK=true -e ENABLE_BACKGROUND_JOBS=false cloudsave
-#              sleep 3
-#              docker ps -a
-#              docker logs cloud-debug
+      - name: build-test
+        env:
+          JWT_SECRET: change-me-to-a-long-random-string
+          DB_HOST: cloudsave.czqsco2eaxj9.af-south-1.rds.amazonaws.com
+          DB_PORT: 3306
+          DB_NAME: CloudSave_db
+          DB_USERNAME: Kenny
+          DB_PASSWORD: kenny2007
+          S3_BUCKET: cloudsave-bucket-871145212791
+          ENABLE_BACKGROUND_JOBS: true
+          SKIP_DB_CHECK: false
+          SKIP_S3_CHECK: false
+        run: |
+             docker run -d --name cloud-debug -p 3000:4000 \
+             -e DB_HOST \
+             -e DB_NAME \
+             -e DB_PORT \
+             -e DB_USERNAME \
+             -e DB_PASSWORD \
+             -e S3_BUCKET \
+             -e SKIP_DB_CHECK=true -e JWT_SECRET=abcdefghijklmnopqrstuvwxyhiyvjgyukvfgyjm -e SKIP_S3_CHECK=true -e ENABLE_BACKGROUND_JOBS=false cloudsave
+             sleep 3
+             docker ps -a
+             docker logs cloud-debug
 
-#       - name:  test
-#         run: |
-#               sleep 6
-#               curl --fail http://localhost:3000
+      - name:  test
+        run: |
+              sleep 6
+              curl --fail http://localhost:3000
 
-#   push_to_ecr:
-#     runs-on: ubuntu-latest
-#     needs: build_and_test
-#     steps:
-#     - uses: actions/checkout@v4
+  push_to_ecr:
+    runs-on: ubuntu-latest
+    needs: build_and_test
+    steps:
+    - uses: actions/checkout@v4
 
-#     - name: get identity
-#       uses: aws-actions/configure-aws-credentials@v4
-#       with:
-#          role-to-assume: arn:aws:iam::871145212791:role/github-role-dev
-#          aws-region: af-south-1
+    - name: get identity
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+         role-to-assume: arn:aws:iam::871145212791:role/github-role-dev
+         aws-region: af-south-1
     
-#     - name: test_credentials
-#       run: aws sts get-caller-identity
+    - name: test_credentials
+      run: aws sts get-caller-identity
 
-#     - name: login_ecr_service
-#       id: login-ecr
-#       uses: aws-actions/amazon-ecr-login@v2
+    - name: login_ecr_service
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
     
-#     - name: get-ecr-repo
-#       id: repo
-#       env:
-#          REPO_URL: ${{steps.login-ecr.outputs.registry}}
-#       run: |
-#            url='${{env.REPO_URL}}/cloudsave-repo-dev:${{github.sha}}'         
-#            echo "repo_url=$url" >> $GITHUB_OUTPUT
+    - name: get-ecr-repo
+      id: repo
+      env:
+         REPO_URL: ${{steps.login-ecr.outputs.registry}}
+      run: |
+           url='${{env.REPO_URL}}/cloudsave-repo-dev:${{github.sha}}'         
+           echo "repo_url=$url" >> $GITHUB_OUTPUT
 
-#     - name: build-tag-push
-#       run: |
-#            docker build -t "${{steps.repo.outputs.repo_url}}" .
-#            docker push "${{steps.repo.outputs.repo_url}}"
+    - name: build-tag-push
+      run: |
+           docker build -t "${{steps.repo.outputs.repo_url}}" .
+           docker push "${{steps.repo.outputs.repo_url}}"
 
-#     - name: revise-task-def
-#       id: update-task-def
-#       uses: aws-actions/amazon-ecs-render-task-definition@v1
-#       with:
-#           task-definition-family: web-app
-#           container-name: cloudsave-app
-#           image: ${{steps.repo.outputs.repo_url}}
+    - name: revise-task-def
+      id: update-task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+          task-definition-family: web-app
+          container-name: cloudsave-app
+          image: ${{steps.repo.outputs.repo_url}}
 
-#     - name: update-ecs
-#       uses: aws-actions/amazon-ecs-deploy-task-definition@v2
-#       with:
-#            task-definition: ${{steps.update-task-def.outputs.task-definition}}
-#            service: cloudsave-ecs-dev
-#            cluster: cloudsave-cluster-dev
+    - name: update-ecs
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+      with:
+           task-definition: ${{steps.update-task-def.outputs.task-definition}}
+           service: cloudsave-ecs-dev
+           cluster: cloudsave-cluster-dev
       
 
 

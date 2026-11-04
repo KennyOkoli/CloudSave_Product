@@ -1,10 +1,10 @@
 output "db_sg"{
     value = aws_security_group.mysql_sg.id
 }
-
+/*
 output "ec2_arn" {
     value = aws_instance.db_ec2_jumphost.arn
-}
+}*/
 
 output "db_name" {
     value = aws_db_instance.CloudSave_db.db_name
