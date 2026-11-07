@@ -1,4 +1,4 @@
-module "vpc" {
+/*module "vpc" {
     source = "../../modules/vpc"
     environment = var.env
 }
@@ -37,7 +37,7 @@ module "IdentityCenter" {
     secret-arn = module.secrets.secret-manager-arn
     ec2-arn = module.rds.ec2_arn
 }
-*/
+
 module "github" {
     source = "../../modules/github"
     ecr_arn = module.ecs.ecr-arn
@@ -78,4 +78,4 @@ module "ec2" {
     public-subnet = module.vpc.vpc-public-subnet
     ecs-sg-var = module.ecs.ecs-sg
     environment = var.env
-}
+}*/
